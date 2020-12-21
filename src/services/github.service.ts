@@ -18,14 +18,15 @@ export type GithubProfile = {
 export const GITHUB_API_URL = 'https://api.github.com'
 
 export async function getProfile (username: string): Promise<GithubProfile> {
-    const response = await fetch(`${GITHUB_API_URL}/users/${username}`)
+    return await fetch(`${GITHUB_API_URL}/users/${username}`)
         .then(res => {
             if (res.status !== 200) {
-                throw new Error('')
+                throw new Error(res.statusText)
             }
             return res.json()
         })
         .then((profile: GithubProfile) => profile)
-        .catch(err => { throw err })
-    return response
+        .catch(err => {
+            throw err
+        })
 }
