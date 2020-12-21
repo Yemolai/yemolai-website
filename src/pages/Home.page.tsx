@@ -1,5 +1,10 @@
 import React from 'react'
+import {Profile} from "../components/Profile";
 
 export function HomePage() {
-    return (<div>Home</div>)
+    return (
+        <div>
+            <Profile username='yemolai'/>
+        </div>
+    )
 }
