@@ -1,16 +1,7 @@
-import React, { ReactNode, ReactNodeArray } from 'react'
+import styled from 'styled-components'
 
-export type MainLayoutProps = {
-    children?: ReactNode | ReactNodeArray;
-}
-
-export function MainLayout ({ children = [] }: MainLayoutProps) {
-    return (
-        <div className="layout main-layout">
-            Main layout
-            <div className="layout-children main-layout-children">
-                {children}
-            </div>
-        </div>
-    )
-}
+export const MainLayout = styled.article`
+  display: flex;
+  font-size: 1.2em;
+  margin: 0.25cm 0.5cm;
+`
