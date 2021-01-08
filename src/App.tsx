@@ -1,17 +1,12 @@
 import React from 'react'
+import styled from 'styled-components'
 import { AppRouter } from './router'
-import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-      </header>
-      <article className="app-content">
-        <AppRouter/>
-      </article>
-    </div>
-  );
-}
+export default styled(() => (<div><AppRouter/></div>))`
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--white-color, #EEEEEE);
+`
 
-export default App;

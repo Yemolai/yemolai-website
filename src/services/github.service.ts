@@ -12,7 +12,9 @@ export type GithubProfile = {
     followers: number,
     following: number,
     created_at: Date,
-    updated_at: Date
+    updated_at: Date,
+    repos_url: string,
+    twitter_username: string
 }
 
 export const GITHUB_API_URL = 'https://api.github.com'
