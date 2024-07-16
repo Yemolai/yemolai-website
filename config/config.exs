@@ -9,7 +9,7 @@ import Config
 
 config :yemolai_website,
   ecto_repos: [
-    # YemolaiWebsite.Repo
+    YemolaiWebsite.Repo
   ],
   generators: [timestamp_type: :utc_datetime]
 

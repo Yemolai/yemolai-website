@@ -9,7 +9,7 @@ defmodule YemolaiWebsite.Application do
   def start(_type, _args) do
     children = [
       YemolaiWebsiteWeb.Telemetry,
-      # YemolaiWebsite.Repo,
+      YemolaiWebsite.Repo,
       {DNSCluster, query: Application.get_env(:yemolai_website, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: YemolaiWebsite.PubSub},
       # Start the Finch HTTP client for sending emails
