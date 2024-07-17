@@ -77,12 +77,12 @@ defmodule YemolaiWebsite.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": [
-        "phx.digest assets/css -o priv/static/assets",
         "tailwind yemolai_website",
-        "esbuild yemolai_website"
+        "esbuild yemolai_website",
+        "assets.css_symlinks"
       ],
       "assets.deploy": [
-        "phx.digest assets/css -o priv/static/assets",
+        "assets.css_symlinks.clean",
         "tailwind yemolai_website --minify",
         "esbuild yemolai_website --minify",
         "phx.digest"
