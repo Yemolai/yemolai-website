@@ -83,6 +83,7 @@ defmodule YemolaiWebsite.MixProject do
       ],
       "assets.deploy": [
         "assets.css_symlinks.clean",
+        "phx.digest assets/css -o priv/static/assets",
         "tailwind yemolai_website --minify",
         "esbuild yemolai_website --minify",
         "phx.digest"
