@@ -70,13 +70,19 @@ defmodule YemolaiWebsite.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      dev: ["assets.build", "phx.server"],
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind yemolai_website", "esbuild yemolai_website"],
+      "assets.build": [
+        "phx.digest assets/css -o priv/static/assets",
+        "tailwind yemolai_website",
+        "esbuild yemolai_website"
+      ],
       "assets.deploy": [
+        "phx.digest assets/css -o priv/static/assets",
         "tailwind yemolai_website --minify",
         "esbuild yemolai_website --minify",
         "phx.digest"

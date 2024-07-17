@@ -1,22 +1,19 @@
 <.flash_group flash={@flash} />
-
-<main class="px-4 py-10 sm:px-6 sm:py-28 lg:px-8 xl:px-14 xl:py-32">
-  <div
-    class="mx-auto max-w-full xl:max-w-[72rem] lg:mx-0 grid grid-flow-row gap-8"
-    style="grid-template-columns: 25% auto"
-  >
-    <div class="w-full flex flex-col align-bottom justify-center">
+<link rel="stylesheet" type="text/css" href={~p"/assets/home.css"} />
+<main class="flex justify-center sm:block sm:w-full px-4 py-4 sm:px-6 lg:px-8 xl:px-14 max-w-[72rem]">
+  <div class="w-[18em] sm:w-[32em] sm:py-4 md:w-full md:py-4 md:max-w-full md:mx-0 grid md:grid-flow-row md:gap-8 grid-profile">
+    <div class="max-w-full w-full md:flex md:flex-col md:align-bottom md:justify-center grid-profile-picture-area">
       <img class="rounded-full" src={~p"/images/profile/2023.png"} alt="profile picture" />
     </div>
-    <div class="mt-4">
-      <h1 class="text-[7em] my-0 py-0 font-semibold leading-tight tracking-tighter text-zinc-900 text-balance">
+    <div class="xl:w-1/2 md:mt-4 grid-profile-name-area">
+      <h1 class="w-full text-[2em] sm:text-[5em] md:text-[7em] my-0 py-0 font-semibold leading-tight tracking-tighter text-zinc-900 text-balance">
         Romulo <br />Rodrigues
       </h1>
-      <span class="text-xl font-semibold mt-0 leading-tight tracking-tighter text-zinc-800 text-balance">
+      <span class="text-xl md:text-[3em] font-semibold mt-0 leading-tight tracking-tighter text-zinc-800 text-balance">
         Software Engineer
       </span>
     </div>
-    <div class="w-full">
+    <div class="md:w-full grid-profile-about-area">
       <p class="text-base tracking-wide leading-7 text-zinc-600">
         Seasoned software developer, known for thriving in dynamic environments, specialized in Web full-stack web development.
       </p>
@@ -27,7 +24,7 @@
         Seeking to leverage these strengths and experiences in a challenging role that allows for growth and innovation.
       </p>
     </div>
-    <div class="flex flex-col gap-4 pr-8">
+    <div class="md:flex md:flex-col md:gap-4 md:pr-8 grid-profile-experience-area">
       <div class="flex flex-col gap-1">
         <h2 class="text-lg font-bold uppercase">Work Experience</h2>
         <hr class="mb-2" />

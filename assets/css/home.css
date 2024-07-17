@@ -1,0 +1,36 @@
+.grid-profile-picture-area {
+  grid-area: picture;
+}
+.grid-profile-name-area {
+  grid-area: name;
+}
+.grid-profile-about-area {
+  grid-area: about;
+}
+.grid-profile-experience-area {
+  grid-area: experience;
+}
+
+@media (max-width: 900px) {
+  .grid-profile {
+    grid-gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: min-content;
+    grid-template-areas:
+      'picture    name'
+      'about      about'
+      'experience experience';
+  }
+  .grid-profile-picture-area > * {
+    display: inline-block;
+  }
+  .grid-profile-name-area > * {
+    display: inline-block;
+  }
+}
+@media (min-width: 901px) {
+  .grid-profile {
+    grid-template-areas: 'picture name'
+                          'about experience';
+  }
+}

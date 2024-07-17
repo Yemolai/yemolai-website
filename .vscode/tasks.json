@@ -1,0 +1,60 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "mix",
+			"task": "Build",
+			"problemMatcher": [
+				"$mixCompileError",
+				"$mixCompileWarning"
+			],
+			"group": "build",
+			"label": "mix: Build"
+		},
+		{
+			"type": "mix",
+			"task": "Clean project",
+			"problemMatcher": [],
+			"label": "mix: Clean project"
+		},
+		{
+			"type": "mix",
+			"task": "Format",
+			"problemMatcher": [],
+			"label": "mix: Format"
+		},
+		{
+			"type": "mix",
+			"task": "Update all deps",
+			"problemMatcher": [],
+			"label": "mix: Update all deps"
+		},
+		{
+			"type": "shell",
+			"command": "${workspaceFolder}/scripts/digest_css.sh",
+			"label": "shell: Digest CSS files",
+			"problemMatcher": [],
+			"isBackground": true
+		},
+		{
+			"type": "mix",
+			"task": "Run tests",
+			"problemMatcher": [
+				"$mixCompileError",
+				"$mixCompileWarning",
+				"$mixTestFailure"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "mix: Run tests"
+		},
+		{
+			"type": "mix",
+			"task": "Run no halt",
+			"problemMatcher": [],
+			"label": "mix: Run no halt"
+		}
+	]
+}
