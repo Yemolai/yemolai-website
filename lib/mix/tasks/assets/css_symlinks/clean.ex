@@ -8,10 +8,14 @@ defmodule Mix.Tasks.Assets.CssSymlinks.Clean do
   def run(_) do
     target_dir = Path.expand("priv/static/assets", File.cwd!())
 
-    target_dir
-    |> File.ls!()
-    |> Enum.filter(&String.ends_with?(&1, ".css"))
-    |> Enum.each(&remove_symlink_if_exists(&1, target_dir))
+    if File.exists?(target_dir) do
+      target_dir
+      |> File.ls!()
+      |> Enum.filter(&String.ends_with?(&1, ".css"))
+      |> Enum.each(&remove_symlink_if_exists(&1, target_dir))
+    else
+      IO.puts("Compiled assets directory does not exist, nothing to clean.")
+    end
   end
 
   defp remove_symlink_if_exists(file, target_dir) do
