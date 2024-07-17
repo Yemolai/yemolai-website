@@ -1,10 +1,22 @@
 <.flash_group flash={@flash} />
-<div class="px-4 py-10 sm:px-6 sm:py-28 lg:px-8 xl:px-14 xl:py-32">
-  <div class="mx-auto max-w-full xl:max-w-[72rem] lg:mx-0 flex flex-nowrap gap-x-8">
-    <div class="w-1/4 flex flex-col gap-4">
-      <div class="w-full mt-4 mb-14">
-        <img class="rounded-full" src={~p"/images/profile/2023.png"} alt="profile picture" />
-      </div>
+
+<main class="px-4 py-10 sm:px-6 sm:py-28 lg:px-8 xl:px-14 xl:py-32">
+  <div
+    class="mx-auto max-w-full xl:max-w-[72rem] lg:mx-0 grid grid-flow-row gap-8"
+    style="grid-template-columns: 25% auto"
+  >
+    <div class="w-full flex flex-col align-bottom justify-center">
+      <img class="rounded-full" src={~p"/images/profile/2023.png"} alt="profile picture" />
+    </div>
+    <div class="mt-4">
+      <h1 class="text-[7em] my-0 py-0 font-semibold leading-tight tracking-tighter text-zinc-900 text-balance">
+        Romulo <br />Rodrigues
+      </h1>
+      <span class="text-xl font-semibold mt-0 leading-tight tracking-tighter text-zinc-800 text-balance">
+        Software Engineer
+      </span>
+    </div>
+    <div class="w-full">
       <p class="text-base tracking-wide leading-7 text-zinc-600">
         Seasoned software developer, known for thriving in dynamic environments, specialized in Web full-stack web development.
       </p>
@@ -15,32 +27,9 @@
         Seeking to leverage these strengths and experiences in a challenging role that allows for growth and innovation.
       </p>
     </div>
-    <div class="w-3/4 flex flex-col gap-4">
-      <h1 class="text-[7em] my-0 py-0 font-semibold leading-tight tracking-tighter text-zinc-900 text-balance">
-        Romulo <br />Rodrigues
-      </h1>
-      <span class="text-xl font-semibold mt-0 leading-tight tracking-tighter text-zinc-800 text-balance">
-        Software Engineer
-      </span>
+    <div class="flex flex-col gap-4 pr-8">
       <div class="flex flex-col gap-1">
-        <h2 class="text-lg font-bold">Education</h2>
-        <hr class="mb-2" />
-        <h3 class="font-medium">
-          IESAM &mdash; Instituto de Estudos Superiores da Amazônia
-          <span class="text-zinc-600">
-            (acquired by Faculdade Estácio de Belém)
-          </span>
-          <span class="dont-print font-semibold cursor-pointer">
-            &#9432;
-          </span>
-        </h3>
-        <p class="font-thin tracking-loose">2012 &dash; 2016</p>
-        <p class="text-base font-light leading-snug tracking-loose text-pretty">
-          Graduated in bachelor’s degree in computer engineering with all honors and 4.8/5 GPA. Assisting supplementary freshman Math and Programming classes.
-        </p>
-      </div>
-      <div class="flex flex-col gap-1">
-        <h2 class="text-lg font-bold">Work Experience</h2>
+        <h2 class="text-lg font-bold uppercase">Work Experience</h2>
         <hr class="mb-2" />
         <div class="flex flex-col gap-4">
           <div>
@@ -91,7 +80,24 @@
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <h2 class="text-lg font-bold">Skills and Tools</h2>
+        <h2 class="text-lg font-bold uppercase">Education</h2>
+        <hr class="mb-2" />
+        <h3 class="font-medium">
+          IESAM &mdash; Instituto de Estudos Superiores da Amazônia
+          <span class="text-zinc-600">
+            (acquired by Faculdade Estácio de Belém)
+          </span>
+          <span class="dont-print font-semibold cursor-pointer">
+            &#9432;
+          </span>
+        </h3>
+        <p class="font-thin tracking-loose">2012 &dash; 2016</p>
+        <p class="text-base font-light leading-snug tracking-loose text-pretty">
+          Graduated in bachelor’s degree in computer engineering with all honors and 4.8/5 GPA. Assisting supplementary freshman Math and Programming classes.
+        </p>
+      </div>
+      <div class="flex flex-col gap-1">
+        <h2 class="text-lg font-bold uppercase">Skills and Tools</h2>
         <hr class="mb-2" />
 
         <div class="flex flex-col gap-y-4">
@@ -129,28 +135,34 @@
       </div>
     </div>
   </div>
-  <footer class="max-w-full xl:max-w-[72rem] px-2 py-4 mt-12">
-    <div class="text-right flex flex-col dont-print">
-      <a
-        href="/projects"
-        class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
-      >
-        Checkout some of my projects 👷🏽‍♂️
-      </a>
-      <a
-        href="https://app.reclaim.ai/m/gabriel-rodrigues/quick-meeting"
-        target="_blank"
-        class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
-      >
-        Schedule a quick call 📲
-      </a>
-      <a
-        href="mailto:jobs@romulogabriel.dev"
-        target="_blank"
-        class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
-      >
-        Get in touch 📧
-      </a>
-    </div>
-  </footer>
-</div>
+</main>
+<footer class="max-w-full xl:max-w-[74rem] px-2 py-4 mb-12">
+  <div class="text-right flex flex-col dont-print">
+    <a
+      href="/projects"
+      class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
+    >
+      Checkout some projects 👷🏽‍♂️
+    </a>
+    <a
+      href="https://app.reclaim.ai/m/gabriel-rodrigues/quick-meeting"
+      target="_blank"
+      class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
+    >
+      Schedule a quick call 📲
+    </a>
+    <a
+      href="https://www.linkedin.com/in/romulo-gabriel-rodrigues/"
+      class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
+    >
+      Say Hi on LinkedIn
+    </a>
+    <a
+      href="mailto:jobs@romulogabriel.dev"
+      target="_blank"
+      class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
+    >
+      Get in touch 📧
+    </a>
+  </div>
+</footer>
