@@ -18,6 +18,7 @@ defmodule YemolaiWebsiteWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/projects", PageController, :projects
   end
 
   # Other scopes may use custom stacks.
