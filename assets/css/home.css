@@ -66,6 +66,7 @@
     break-inside: auto; /* IE 10+ */
   }
   .grid-profile {
+    --max-profile-img-size: 6em;
     width: unset;
     padding: unset;
     column-gap: 2em;
@@ -89,6 +90,14 @@
     break-inside: auto; /* IE 10+ */
     padding: 0;
   }
+  .grid-profile-picture-area {
+    max-height: var(--max-profile-img-size);
+  }
+  .grid-profile-picture-area img {
+    max-height: var(--max-profile-img-size);
+    max-width: var(--max-profile-img-size);
+    align-self: center;
+  }
   .grid-profile-picture-area > * {
     display: inline-block;
   }
@@ -96,6 +105,7 @@
     display: inline-block;
   }
   .grid-profile-name-area {
+    margin-left: calc(var(--max-profile-img-size) * -1);
     font-size: 0.6em;
     align-self: end;
   }
