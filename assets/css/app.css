@@ -4,6 +4,10 @@
 
 /* This file is for your main application CSS */
 
+.only-print {
+  visibility: hidden !important;
+}
+
 @media print {
   .dont-print {
     visibility: hidden !important;

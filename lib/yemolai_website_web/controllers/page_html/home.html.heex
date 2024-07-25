@@ -7,7 +7,7 @@
     </div>
     <div class="xl:w-1/2 md:mt-4 grid-profile-name-area">
       <h1 class="w-full text-[2em] sm:text-[5em] md:text-[7em] my-0 py-0 font-semibold leading-tight tracking-tighter text-zinc-900 text-balance">
-        Romulo <br />Rodrigues
+        Romulo <br class="dont-print" />Rodrigues
       </h1>
       <span class="text-xl md:text-[3em] font-semibold mt-0 leading-tight tracking-tighter text-zinc-800 text-balance">
         Software Engineer
@@ -29,7 +29,7 @@
         <h2 class="text-lg font-bold uppercase">Work Experience</h2>
         <hr class="mb-2" />
         <div class="flex flex-col gap-4">
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               Andela/WWT &mdash; Senior Software Engineer
             </h3>
@@ -38,7 +38,7 @@
               Working for a big player in games industry, providing solutions for client&rsquo;s digital store, migrating legacy data and serving for millions of online users.
             </p>
           </div>
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               Idopter Labs &mdash; Senior Software Developer
             </h3>
@@ -47,7 +47,7 @@
               Providing services in frontend, backend, delivery, and automation for client&rsquo;s payment portal, with multiple payment methods and recurring subscriptions.
             </p>
           </div>
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               Jobsity/Avenue8 &mdash; Software Engineer
             </h3>
@@ -56,7 +56,7 @@
               Development of frontend and backend microservices for real estate marketing automation services in mobile-first web solution for Avenue8 real estate agents.
             </p>
           </div>
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               Emprego.net &mdash; Software Engineer
             </h3>
@@ -65,7 +65,7 @@
               Development of FE and BE for employment platform for unskilled labor job listings of WYSIWYG form builders for no-code HR processes automation.
             </p>
           </div>
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               LINK Soluções &mdash; Software Developer
             </h3>
@@ -80,9 +80,9 @@
         <h2 class="text-lg font-bold uppercase">Education</h2>
         <hr class="mb-2" />
         <h3 class="font-medium">
-          IESAM &mdash; Instituto de Estudos Superiores da Amazônia
+          Faculdade Estácio Belém
           <span class="text-zinc-600">
-            (acquired by Faculdade Estácio de Belém)
+            (prev. known as IESAM)
           </span>
           <span class="dont-print font-semibold cursor-pointer">
             &#9432;
@@ -98,13 +98,13 @@
         <hr class="mb-2" />
 
         <div class="flex flex-col gap-y-4">
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">Teamwork and leadership</h3>
             <p class="text-base font-light leading-snug tracking-loose text-pretty">
-              Product-oriented development soft skills, with great communication with peers, leadership and clients. Experienced leading technically in Agile teams.
+              Product-oriented development soft skills, with great communication with peers, leadership and clients.
             </p>
           </div>
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               Languages and Frameworks
             </h3>
@@ -112,7 +112,7 @@
               Javascript + Typescript, Node.js, HTML5, SASS, Angular v1, Angular 2+, React, Vue.js, jQuery, C#, .Net, Python, Django, Ruby, Ruby on Rails, Elixir, Bash
             </p>
           </div>
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               Databases
             </h3>
@@ -120,7 +120,7 @@
               SQL such as PostgreSQL, MySQL, SQLite, MSSQL and Oracle; NoSQL as AWS DynamoDB, MongoDB, Redis
             </p>
           </div>
-          <div>
+          <div class="break-inside-avoid">
             <h3 class="font-medium">
               Infrastructure
             </h3>
@@ -134,6 +134,18 @@
   </div>
 </main>
 <footer class="max-w-full xl:max-w-[74rem] px-2 py-4 mr-8 md:mr-0 mb-12">
+  <div class="only-print break-inside-avoid">
+    <h2 class="text-lg font-bold uppercase mt-0.5">Contact Info</h2>
+    <hr class="mb-1" />
+    <p>
+      <strong>Email address:&nbsp;</strong>
+      <span>work@romulogabriel.dev</span>
+    </p>
+    <p>
+      <strong>LinkedIn:&nbsp;</strong>
+      <span>https://www.linkedin.com/in/romulo-gabriel-rodrigues/</span>
+    </p>
+  </div>
   <ul class="text-right flex flex-col dont-print">
     <li>
       <a
@@ -195,7 +207,7 @@
     </li>
     <li>
       <a
-        href="mailto:jobs@romulogabriel.dev"
+        href="mailto:work@romulogabriel.dev"
         target="_blank"
         class="font-semibold text-balance underline text-zinc-900 hover:text-zinc-600"
       >

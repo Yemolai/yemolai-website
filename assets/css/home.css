@@ -11,7 +11,7 @@
   grid-area: experience;
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .grid-profile {
     grid-gap: 2rem;
     grid-template-columns: repeat(2, 1fr);
@@ -28,9 +28,130 @@
     display: inline-block;
   }
 }
-@media (min-width: 901px) {
+@media screen and (min-width: 901px) {
   .grid-profile {
     grid-template-areas: 'picture name'
                           'about experience';
+  }
+}
+
+@media print {
+  * {
+    background: transparent;
+    color: #000;
+    text-shadow: none;
+    filter: none;
+  }
+  body {
+    width: unset !important;
+    max-width: unset !important;  
+  }
+  #flash-group {
+    display: none !important;
+  }
+  footer {
+    width: unset;
+    max-width: unset;
+    padding: 0 1.2em !important;
+    margin: unset;
+    font-size: 0.8em;
+  }
+  main {
+    width: unset !important;
+    max-width: unset !important;
+    margin: 0 !important;
+    padding: 0 1.2em !important;
+    -webkit-column-break-inside: auto; /* Chrome, Safari, Opera */
+    page-break-inside: auto; /* Firefox */
+    break-inside: auto; /* IE 10+ */
+  }
+  .grid-profile {
+    width: unset;
+    padding: unset;
+    column-gap: 2em;
+    row-gap: 0.75em;
+    -webkit-column-break-inside: auto; /* Chrome, Safari, Opera */
+    page-break-inside: auto; /* Firefox */
+    break-inside: auto; /* IE 10+ */
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: max-content;
+    grid-template-areas: 'picture name name name'
+                          'about about about about'
+                          'experience experience experience experience';
+  }
+  .text-lg {
+    font-size: 1rem;
+    line-height: 1.25rem;
+  }
+  .grid-profile-experience-area {
+    -webkit-column-break-inside: auto; /* Chrome, Safari, Opera */
+    page-break-inside: auto; /* Firefox */
+    break-inside: auto; /* IE 10+ */
+    padding: 0;
+  }
+  .grid-profile-picture-area > * {
+    display: inline-block;
+  }
+  .grid-profile-name-area > * {
+    display: inline-block;
+  }
+  .grid-profile-name-area {
+    font-size: 0.6em;
+    align-self: end;
+  }
+  .grid-profile-name-area h1 {
+    font-size: 4em;
+    display: block;
+  }
+  .grid-profile-name-area h1 br {
+    display: none;
+  }
+  .grid-profile-name-area span {
+    font-size: 2em;
+  }
+  .grid-profile-about-area {
+    font-size: 1em;
+  }
+  .grid-profile-about-area p {
+    display: inline;
+    font-size: normal;
+    text-align: justify;
+    line-height: normal;
+    letter-spacing: -0.05em;
+    max-width: calc(100% - 1rem);
+    padding-bottom: 0.25em;
+  }
+  .grid-profile-about-area p:first-of-type {
+    margin-left: 2.5em;
+  }
+  .grid-profile-experience-area {
+    row-gap: 0.2em;
+  }
+  .grid-profile-experience-area hr.mb-2 {
+    margin-bottom: 0.1em;
+  }
+  .grid-profile-experience-area .gap-1 {
+    row-gap: 0.1em;
+  }
+  .grid-profile-experience-area .gap-4 {
+    row-gap: 0.2em;
+  }
+  .grid-profile-experience-area h2+hr+div {
+    row-gap: 0.2em;
+  }
+  .grid-profile-experience-area h2+hr+div > div {
+    row-gap: 0.12em;
+  }
+  .grid-profile-experience-area h2 {
+    font-size: normal;
+  }
+  .grid-profile-experience-area h3 {
+    font-size: normal;
+  }
+  .grid-profile-experience-area p {
+    font-size: small;
+    text-align: justify;
+    line-height: normal;
+    letter-spacing: normal;
   }
 }
