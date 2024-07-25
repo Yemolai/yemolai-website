@@ -68,34 +68,32 @@
   .grid-profile {
     --max-profile-img-size: 6em;
     width: unset;
+    margin-top: 0.2em;
     padding: unset;
-    column-gap: 2em;
-    row-gap: 0.75em;
+    column-gap: 1em;
+    row-gap: 0.5em;
     -webkit-column-break-inside: auto; /* Chrome, Safari, Opera */
     page-break-inside: auto; /* Firefox */
     break-inside: auto; /* IE 10+ */
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: max-content;
-    grid-template-areas: 'picture name name name'
-                          'about about about about'
-                          'experience experience experience experience';
+    grid-template-columns: repeat(auto-fill, minmax(var(--max-profile-img-size), 100%));
+    grid-auto-rows: auto auto auto;
+    grid-template-areas: 'picture name name name name'
+                          'about about about about about'
+                          'experience experience experience experience experience';
   }
   .text-lg {
     font-size: 1rem;
     line-height: 1.25rem;
   }
-  .grid-profile-experience-area {
-    -webkit-column-break-inside: auto; /* Chrome, Safari, Opera */
-    page-break-inside: auto; /* Firefox */
-    break-inside: auto; /* IE 10+ */
-    padding: 0;
-  }
   .grid-profile-picture-area {
+    width: 100%;
+    text-align: end;
     max-height: var(--max-profile-img-size);
   }
   .grid-profile-picture-area img {
     max-height: var(--max-profile-img-size);
     max-width: var(--max-profile-img-size);
+    aspect-ratio: 1;
     align-self: center;
   }
   .grid-profile-picture-area > * {
@@ -105,9 +103,9 @@
     display: inline-block;
   }
   .grid-profile-name-area {
-    margin-left: calc(var(--max-profile-img-size) * -1);
+    width: 100%;
     font-size: 0.6em;
-    align-self: end;
+    align-self: center;
   }
   .grid-profile-name-area h1 {
     font-size: 4em;
@@ -135,6 +133,10 @@
     margin-left: 2.5em;
   }
   .grid-profile-experience-area {
+    -webkit-column-break-inside: auto; /* Chrome, Safari, Opera */
+    page-break-inside: auto; /* Firefox */
+    break-inside: auto; /* IE 10+ */
+    padding: 0;
     row-gap: 0.2em;
   }
   .grid-profile-experience-area hr.mb-2 {
