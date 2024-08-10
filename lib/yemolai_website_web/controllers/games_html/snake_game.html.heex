@@ -1,4 +1,4 @@
-<div id="game-container" style="width: calc(100vw - 6em); height: calc(100vh - 8em); background-color: #F9F9F9;">
+<div id="game-container" style="padding: 0.4em; border-radius: 0.25em; width: calc(100vw - 6em); height: calc(100vh - 8em); background-color: #F9F9F9;">
   <canvas id="game-board" style="width: 100%; height: calc(100% - 1.2em)"></canvas>
   <div style="display: flex; flex-direction: row; justify-content: space-between;">
     <p><strong>Score:</strong>&nbsp;<span id="game-points">0</span></p>
@@ -8,6 +8,4 @@
 <script src={~p"/assets/snake_game.js"}></script>
 <script type="text/javascript">
   window.snakeGameControls.init();
-  window.snakeGameControls.start();
-  window.snakeGameControls.pause();
 </script>

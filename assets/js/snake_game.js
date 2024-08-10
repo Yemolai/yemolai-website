@@ -2,15 +2,21 @@ const gameBoard = document.getElementById("game-board");
 const scoreBoard = document.getElementById("game-points");
 const ctx = gameBoard.getContext("2d");
 
+const boardCenter = { x: 0, y: 0 };
 const gridSize = 20;
-const SNAKE_COLOR = "green";
-const SNAKE_EYES_COLOR = "black";
 const [finalGameSpeed, initialGameSpeed] = [120, 360];
 const StateEnum = Object.freeze({
   IDLE: 0,
   PLAYING: 1,
   PAUSED: 2,
   GAME_OVER: 3
+});
+const Colors = Object.freeze({
+  snakeBody: "green",
+  snakeEyes: "black",
+  boardBorder: "black",
+  boardBackground: "white",
+  textColor: "black",
 });
 
 const grid = { width: 0, height: 0 };
@@ -44,7 +50,6 @@ function renderPoints(points) {
 function snakeGameInit() {
   // Set canvas size to match container
   resizeCanvas();
-  draw();
   points = 0;
   gameSpeed = initialGameSpeed;
   renderPoints(points);
@@ -59,11 +64,8 @@ function snakeGameStart() {
 }
 
 function snakeGameOver() {
-  stopGameLoop();
-  snake = [];
-  food = undefined;
   state = StateEnum.GAME_OVER;
-  alert("Game Over!");
+  draw();
 }
 
 function resizeCanvas() {
@@ -73,7 +75,9 @@ function resizeCanvas() {
     container.clientHeight - (container.clientHeight % gridSize);
   grid.height = gameBoard.height / gridSize;
   grid.width = gameBoard.width / gridSize;
-  if (food && (food.x > grid.width || food.y > grid.height)) {
+  boardCenter.x = gameBoard.width / 2;
+  boardCenter.y = gameBoard.height / 2;
+  if (state == StateEnum.PLAYING && food && (food.x > grid.width || food.y > grid.height)) {
     food = generateFood();
   }
   const isSnakeOutOfBounds = snake?.some(
@@ -82,6 +86,7 @@ function resizeCanvas() {
   if (isSnakeOutOfBounds) {
     snakeGameOver();
   }
+  draw();
 }
 
 function generateFood() {
@@ -102,19 +107,28 @@ function generateFood() {
 
 function update() {
   if (!gameLoop) return;
+  if (state != StateEnum.PLAYING) {
+    draw();
+    return;
+  }
+
   moveSnake();
   if (checkCollision()) {
     snakeGameOver();
     return;
   }
-  if (snake[0].x === food.x && snake[0].y === food.y) {
+
+  const { x: headX, y: headY } = snake.find((seg) => seg);
+
+  if (headX === food.x && headY === food.y) {
     snake.push({});
-    points += Math.floor((snake.length * (1200 / gameSpeed)) / 0.11);
+    points += Math.floor((snake.length * (1200 / gameSpeed)) / 0.13);
     food = generateFood();
-    gameSpeed -= 10;
-    if (gameSpeed < finalGameSpeed) gameSpeed = finalGameSpeed;
+    if (gameSpeed - 10 < finalGameSpeed) gameSpeed = finalGameSpeed;
+    else gameSpeed -= 10;
     updateGameLoop();
   }
+
   draw();
   renderPoints(points);
 }
@@ -169,22 +183,27 @@ function checkCollision() {
 }
 
 function drawSnake() {
-  ctx.fillStyle = SNAKE_COLOR;
-    snake.forEach((segment, idx) => {
-      const [x, y] = [segment.x * gridSize, segment.y * gridSize];
-      ctx.fillRect(x, y, gridSize - 1, gridSize - 1);
-      if (idx < 1) {
-        // draw snake eyes (4 inner dots draw or not depending on direction)
-        ctx.fillStyle = SNAKE_EYES_COLOR;
-        ctx.fillRect(
-          x + gridSize / 4,
-          y + gridSize / 4,
-          gridSize / 2 - 1,
-          gridSize / 2 - 1
-        );
-        ctx.fillStyle = SNAKE_COLOR;
-      }
-    });
+  snake.forEach((segment, idx) => {
+    const [x, y] = [segment.x * gridSize, segment.y * gridSize];
+    ctx.fillStyle = Colors.snakeBody;
+    ctx.fillRect(x, y, gridSize - 1, gridSize - 1);
+    if (idx < 1) {
+      // draw snake eyes (4 inner dots draw or not depending on direction)
+      ctx.fillStyle = Colors.snakeEyes;
+      const eyeSize = gridSize / 6 - 1;
+      if (direction == "left" || direction == "up")
+        ctx.fillRect(x + (gridSize / 4) * 1.0, y + (gridSize / 4) * 1.0, eyeSize, eyeSize);
+
+      if (direction == "up" || direction == "right")
+        ctx.fillRect(x + (gridSize / 4) * 2.4, y + (gridSize / 4) * 1.0, eyeSize, eyeSize);
+
+      if (direction == "left" || direction == "down")
+        ctx.fillRect(x + (gridSize / 4) * 1.0, y + (gridSize / 4) * 2.4, eyeSize, eyeSize);
+
+      if (direction == "right" || direction == "down")
+        ctx.fillRect(x + (gridSize / 4) * 2.4, y + (gridSize / 4) * 2.4, eyeSize, eyeSize);
+    }
+  });
 }
 
 function draw() {
@@ -208,9 +227,39 @@ function draw() {
       gridSize - 1
     );
   }
+
+  if (state == StateEnum.IDLE) {
+    ctx.strokeStyle = Colors.textColor;
+    ctx.fillStyle = Colors.textColor;
+    ctx.textAlign = "center";
+    ctx.font = "24px serif";
+    ctx.fillText("Snake Game", boardCenter.x, boardCenter.y - 14);
+    ctx.font = "14px serif";
+    ctx.fillText("press SPACE to start", boardCenter.x, boardCenter.y + 10);
+  }
+  
+  if (state == StateEnum.PAUSED) {
+    ctx.strokeStyle = Colors.textColor;
+    ctx.fillStyle = Colors.textColor;
+    ctx.textAlign = "center";
+    ctx.font = "24px serif";
+    ctx.fillText("PAUSED", boardCenter.x, boardCenter.y);
+  }
+
+  if (state == StateEnum.GAME_OVER) {
+    ctx.strokeStyle = Colors.textColor;
+    ctx.fillStyle = Colors.textColor;
+    ctx.textAlign = "center";
+    ctx.font = "24px serif";
+    ctx.fillText("Game Over", boardCenter.x, boardCenter.y - 26);
+    ctx.font = "14px serif";
+    ctx.fillText(`${points} POINTS!`, boardCenter.x, boardCenter.y);
+    ctx.fillText(`Press SPACE to play again`, boardCenter.x, boardCenter.y + 16);
+  }
 }
 
 function handleKeyDownEvent(e) {
+  if (!gameLoop || state !== StateEnum.PLAYING) return;
   const opposites = { down: "up", left: "right", right: "left", up: "down" };
   function setDirection(desired) {
     if (lastDirection !== opposites[desired]) {
@@ -237,19 +286,18 @@ function handleKeyUpEvent(e) {
   switch (e.code) {
     case "Escape":
       if (gameLoop && state == StateEnum.PLAYING) {
-        stopGameLoop();
         state = StateEnum.PAUSED;
       } else if (state == StateEnum.GAME_OVER) { 
         stopGameLoop();
         snakeGameInit();
         state = StateEnum.IDLE;
       } else if (state == StateEnum.PAUSED) {
-        startGameLoop();
+        state = StateEnum.PLAYING;
       }
       break;
     case "Space":
-      if (!gameLoop && state == StateEnum.PAUSED) {
-        startGameLoop();
+      if (state == StateEnum.PAUSED) {
+        state = StateEnum.PLAYING;
       } else if (state == StateEnum.IDLE) {
         stopGameLoop();
         snakeGameStart();
@@ -272,7 +320,6 @@ window.snakeGameControls = {
     snakeGameStart();
   },
   pause() {
-    stopGameLoop();
     state = StateEnum.PAUSED;
   },
   stop() {
@@ -282,5 +329,7 @@ window.snakeGameControls = {
     ctx.clearRect(0, 0, gameBoard.width, gameBoard.height);
     snake = [];
     food = undefined;
+    stopGameLoop();
+
   }
 }
