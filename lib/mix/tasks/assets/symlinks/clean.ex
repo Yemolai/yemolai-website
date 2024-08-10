@@ -1,8 +1,8 @@
-defmodule Mix.Tasks.Assets.CssSymlinks.Clean do
+defmodule Mix.Tasks.Assets.Symlinks.Clean do
   use Mix.Task
 
   @moduledoc """
-    Removes all symbolic links for custom CSS in priv/static/assets
+    Removes all symbolic links for custom CSS and JS assets in priv/static/assets
   """
 
   def run(_) do
@@ -11,7 +11,8 @@ defmodule Mix.Tasks.Assets.CssSymlinks.Clean do
     if File.exists?(target_dir) do
       target_dir
       |> File.ls!()
-      |> Enum.filter(&String.ends_with?(&1, ".css"))
+      |> Enum.filter(&(String.ends_with?(&1, ".css") or String.ends_with?(&1, ".js")))
+      |> Enum.reject(&(&1 in ["app.css", "app.js"]))
       |> Enum.each(&remove_symlink_if_exists(&1, target_dir))
     else
       IO.puts("Compiled assets directory does not exist, nothing to clean.")

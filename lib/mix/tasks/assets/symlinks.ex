@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Assets.CssSymlinks do
+defmodule Mix.Tasks.Assets.Symlinks do
   use Mix.Task
 
   @moduledoc """
@@ -8,16 +8,26 @@ defmodule Mix.Tasks.Assets.CssSymlinks do
   @shortdoc "Creates symbolic links for all custom CSS files"
 
   def run(_) do
-    source_dir = Path.expand("assets/css", File.cwd!())
+    css_dir = Path.expand("assets/css", File.cwd!())
+    js_dir = Path.expand("assets/js", File.cwd!())
     target_dir = Path.expand("priv/static/assets", File.cwd!())
 
     File.mkdir_p!(target_dir)
 
-    source_dir
-    |> File.ls!()
-    |> Enum.filter(&String.ends_with?(&1, ".css"))
-    |> Enum.reject(&(&1 == "app.css"))
-    |> Enum.each(&create_symlink(&1, source_dir, target_dir))
+    [
+      {css_dir, ".css", ["app.css"]},
+      {js_dir, ".js", ["app.js"]}
+    ]
+    |> Enum.flat_map(fn {dir, ext, skip} ->
+      dir
+      |> File.ls!()
+      |> Enum.filter(&String.ends_with?(&1, ext))
+      |> Enum.reject(&(&1 in skip))
+      |> Enum.map(&{&1, dir})
+    end)
+    |> Enum.each(fn {file, source_dir} ->
+      create_symlink(file, source_dir, target_dir)
+    end)
   end
 
   defp create_symlink(file, source_dir, target_dir) do
