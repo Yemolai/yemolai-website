@@ -1,15 +1,18 @@
 const gameBoard = document.getElementById("game-board");
 const scoreBoard = document.getElementById("game-points");
+const highestScore = document.getElementById("game-record");
 const ctx = gameBoard.getContext("2d");
 
+const SCORES_STORAGE_KEY = "previous_scores";
 const boardCenter = { x: 0, y: 0 };
 const gridSize = 20;
 const [finalGameSpeed, initialGameSpeed] = [120, 360];
+const previousScores = { scores: [] };
 const StateEnum = Object.freeze({
   IDLE: 0,
   PLAYING: 1,
   PAUSED: 2,
-  GAME_OVER: 3
+  GAME_OVER: 3,
 });
 const Colors = Object.freeze({
   snakeBody: "green",
@@ -22,7 +25,7 @@ const Colors = Object.freeze({
 const grid = { width: 0, height: 0 };
 let food, direction, lastDirection, gameLoop;
 let snake = [];
-let state = StateEnum.IDLE; // can be 
+let state = StateEnum.IDLE; // can be
 let points = 0;
 let gameSpeed = initialGameSpeed;
 
@@ -38,13 +41,57 @@ function stopGameLoop() {
 }
 
 function updateGameLoop() {
-  clearInterval(gameLoop)
+  clearInterval(gameLoop);
   gameLoop = setInterval(update, gameSpeed);
 }
 
+const scoreFormatter = new Intl.NumberFormat(undefined, {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+  minimumIntegerDigits: 3,
+});
+
+const paddedScoreFormatter = new Intl.NumberFormat(undefined, {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+  minimumIntegerDigits: 9,
+});
+
+function formatScore(score, { padded } = {}) {
+  if (padded) paddedScoreFormatter.format(score)
+  return scoreFormatter.format(score);
+}
+
 function renderPoints(points) {
-  if (!scoreBoard) return;
-  scoreBoard.innerText = points;
+  if (!scoreBoard || isNaN(points)) return;
+  scoreBoard.innerText = formatScore(points);
+}
+
+function loadPreviousScores() {
+  try {
+    const saveFile = localStorage.getItem(SCORES_STORAGE_KEY) ?? '{"scores":[]}';
+    previousScores.scores = JSON.parse(saveFile).scores;
+  } catch (err) {
+    console.error("Something went wrong loading the scores", err);
+  }
+}
+
+function savePreviousScores() {
+  try {
+    const saveFile = JSON.stringify(previousScores);
+    localStorage.setItem(SCORES_STORAGE_KEY, saveFile);
+  } catch (err) {
+    console.error("Something went wrong saving the scores", err);
+  }
+}
+
+function renderHighest() {
+  if (!highestScore) return;
+  const maxScore = previousScores.scores.reduce(
+    (prev, curr) => (curr.points > prev.points ? curr : prev),
+    { points: 0 }
+  );
+  highestScore.innerText = formatScore(maxScore.points, { padded: true });
 }
 
 function snakeGameInit() {
@@ -52,11 +99,17 @@ function snakeGameInit() {
   resizeCanvas();
   points = 0;
   gameSpeed = initialGameSpeed;
+  loadPreviousScores();
   renderPoints(points);
+  renderHighest();
 }
 
 function snakeGameStart() {
-  snake = [{ x: 5, y: 5 }, { x: 4, y: 5 }, { x: 3, y: 5 }];
+  snake = [
+    { x: 5, y: 5 },
+    { x: 4, y: 5 },
+    { x: 3, y: 5 },
+  ];
   food = generateFood();
   direction = "right";
   snakeGameInit();
@@ -65,6 +118,9 @@ function snakeGameStart() {
 
 function snakeGameOver() {
   state = StateEnum.GAME_OVER;
+  previousScores.scores.push({ points, dt: new Date().getTime() });
+  savePreviousScores();
+  renderHighest();
   draw();
 }
 
@@ -77,7 +133,11 @@ function resizeCanvas() {
   grid.width = gameBoard.width / gridSize;
   boardCenter.x = gameBoard.width / 2;
   boardCenter.y = gameBoard.height / 2;
-  if (state == StateEnum.PLAYING && food && (food.x > grid.width || food.y > grid.height)) {
+  if (
+    state == StateEnum.PLAYING &&
+    food &&
+    (food.x > grid.width || food.y > grid.height)
+  ) {
     food = generateFood();
   }
   const isSnakeOutOfBounds = snake?.some(
@@ -192,16 +252,36 @@ function drawSnake() {
       ctx.fillStyle = Colors.snakeEyes;
       const eyeSize = gridSize / 6 - 1;
       if (direction == "left" || direction == "up")
-        ctx.fillRect(x + (gridSize / 4) * 1.0, y + (gridSize / 4) * 1.0, eyeSize, eyeSize);
+        ctx.fillRect(
+          x + (gridSize / 4) * 1.0,
+          y + (gridSize / 4) * 1.0,
+          eyeSize,
+          eyeSize
+        );
 
       if (direction == "up" || direction == "right")
-        ctx.fillRect(x + (gridSize / 4) * 2.4, y + (gridSize / 4) * 1.0, eyeSize, eyeSize);
+        ctx.fillRect(
+          x + (gridSize / 4) * 2.4,
+          y + (gridSize / 4) * 1.0,
+          eyeSize,
+          eyeSize
+        );
 
       if (direction == "left" || direction == "down")
-        ctx.fillRect(x + (gridSize / 4) * 1.0, y + (gridSize / 4) * 2.4, eyeSize, eyeSize);
+        ctx.fillRect(
+          x + (gridSize / 4) * 1.0,
+          y + (gridSize / 4) * 2.4,
+          eyeSize,
+          eyeSize
+        );
 
       if (direction == "right" || direction == "down")
-        ctx.fillRect(x + (gridSize / 4) * 2.4, y + (gridSize / 4) * 2.4, eyeSize, eyeSize);
+        ctx.fillRect(
+          x + (gridSize / 4) * 2.4,
+          y + (gridSize / 4) * 2.4,
+          eyeSize,
+          eyeSize
+        );
     }
   });
 }
@@ -214,10 +294,10 @@ function draw() {
   ctx.strokeRect(1, 1, gameBoard.width - 1, gameBoard.height - 1);
 
   if (snake?.length) {
-    drawSnake()
+    drawSnake();
   }
 
-  if (food && 'x' in food && 'y' in food) {
+  if (food && "x" in food && "y" in food) {
     // Draw food
     ctx.fillStyle = "red";
     ctx.fillRect(
@@ -237,7 +317,7 @@ function draw() {
     ctx.font = "14px serif";
     ctx.fillText("press SPACE to start", boardCenter.x, boardCenter.y + 10);
   }
-  
+
   if (state == StateEnum.PAUSED) {
     ctx.strokeStyle = Colors.textColor;
     ctx.fillStyle = Colors.textColor;
@@ -247,14 +327,19 @@ function draw() {
   }
 
   if (state == StateEnum.GAME_OVER) {
+    const formattedScore = formatScore(points);
     ctx.strokeStyle = Colors.textColor;
     ctx.fillStyle = Colors.textColor;
     ctx.textAlign = "center";
     ctx.font = "24px serif";
     ctx.fillText("Game Over", boardCenter.x, boardCenter.y - 26);
     ctx.font = "14px serif";
-    ctx.fillText(`${points} POINTS!`, boardCenter.x, boardCenter.y);
-    ctx.fillText(`Press SPACE to play again`, boardCenter.x, boardCenter.y + 16);
+    ctx.fillText(`${formattedScore} POINTS!`, boardCenter.x, boardCenter.y);
+    ctx.fillText(
+      `Press SPACE to play again`,
+      boardCenter.x,
+      boardCenter.y + 16
+    );
   }
 }
 
@@ -287,7 +372,7 @@ function handleKeyUpEvent(e) {
     case "Escape":
       if (gameLoop && state == StateEnum.PLAYING) {
         state = StateEnum.PAUSED;
-      } else if (state == StateEnum.GAME_OVER) { 
+      } else if (state == StateEnum.GAME_OVER) {
         stopGameLoop();
         snakeGameInit();
         state = StateEnum.IDLE;
@@ -298,7 +383,7 @@ function handleKeyUpEvent(e) {
     case "Space":
       if (state == StateEnum.PAUSED) {
         state = StateEnum.PLAYING;
-      } else if (state == StateEnum.IDLE) {
+      } else if (state == StateEnum.IDLE || state == StateEnum.GAME_OVER) {
         stopGameLoop();
         snakeGameStart();
       }
@@ -330,6 +415,12 @@ window.snakeGameControls = {
     snake = [];
     food = undefined;
     stopGameLoop();
-
+  },
+  input(code, toKeyUp = false) {
+    if (toKeyUp) {
+      handleKeyUpEvent({ code })
+    } else {
+      handleKeyDownEvent({ code })
+    }
   }
-}
+};
