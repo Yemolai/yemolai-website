@@ -1,0 +1,37 @@
+<link rel="stylesheet" type="text/css" href={~p"/assets/snake_game.css"} />
+<div id="game-container">
+  <canvas id="game-board"></canvas>
+  <div class="info-row">
+    <p><small><strong>Score:</strong>&nbsp;<span id="game-points">0</span></small></p>
+    <p><small>Esc to pause</small></p>
+    <p><small><strong>Highest:</strong>&nbsp;<span id="game-record">0</span></small></p>
+  </div>
+  <div class="input-container">
+    <div class="d-pad">
+      <button class="d-pad-button escape" onclick="window.snakeGameControls.input('Escape', true)">
+        Esc
+      </button>
+      <button class="d-pad-button up" onclick="window.snakeGameControls.input('ArrowUp')">
+        ↑
+      </button>
+      <button class="d-pad-button left" onclick="window.snakeGameControls.input('ArrowLeft')">
+        ←
+      </button>
+      <button class="d-pad-button center" onclick="window.snakeGameControls.input('Space', true)">
+        ␣
+      </button>
+      <button class="d-pad-button right" onclick="window.snakeGameControls.input('ArrowRight')">
+        →
+      </button>
+      <button class="d-pad-button down" onclick="window.snakeGameControls.input('ArrowDown')">
+        ↓
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src={~p"/assets/snake_game.js"}>
+</script>
+<script type="text/javascript">
+  window.snakeGameControls.init();
+</script>
