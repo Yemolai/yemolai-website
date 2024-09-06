@@ -12,6 +12,9 @@
   .dont-print {
     visibility: hidden !important;
   }
+  .no-print {
+    display: none !important;
+  }
 
   .only-print {
     visibility: visible !important;
