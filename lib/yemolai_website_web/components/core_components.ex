@@ -681,7 +681,7 @@ defmodule YemolaiWebsiteWeb.CoreComponents do
 
   def desktop_topbar_link(assigns) do
     ~H"""
-    <.link href={@href} class={["hover:text-zinc-700 underline capitalize", @class]}>
+    <.link href={@href} method={@method} class={["hover:text-zinc-700 underline capitalize", @class]}>
       <%= @label %>
     </.link>
     """
@@ -696,6 +696,7 @@ defmodule YemolaiWebsiteWeb.CoreComponents do
     ~H"""
     <.link
       href={@href}
+      method={@method}
       class={[
         "text-[0.8125rem] leading-6 text-zinc-900 hover:text-zinc-700 underline capitalize",
         @class
