@@ -54,6 +54,7 @@ defmodule YemolaiWebsiteWeb do
       use Phoenix.LiveView,
         layout: {YemolaiWebsiteWeb.Layouts, :app}
 
+      on_mount YemolaiWebsiteWeb.Helpers.RoutesHelpers
       unquote(html_helpers())
     end
   end

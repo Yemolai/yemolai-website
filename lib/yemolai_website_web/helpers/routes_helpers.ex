@@ -2,6 +2,7 @@ defmodule YemolaiWebsiteWeb.Helpers.RoutesHelpers do
   @moduledoc """
   Provide routes to build links lists
   """
+  import Phoenix.LiveView.Utils
 
   def init(opts), do: opts
 
@@ -9,14 +10,30 @@ defmodule YemolaiWebsiteWeb.Helpers.RoutesHelpers do
     Plug.Conn.assign(conn, :routes, routes_list(conn.assigns[:current_user]))
   end
 
-  def routes_list(current_user) when current_user == nil do
+  def on_mount(:default, _params, session, socket) do
+    socket = assign_new(socket, :routes, fn ->
+      routes_list_from_session(session)
+    end)
+    {:cont, socket}
+  end
+
+  defp routes_list_from_session(%{"user_token" => user_token}) do
+    current_user = Accounts.get_user_by_session_token(user_token)
+    routes_list(current_user)
+  end
+
+  defp routes_list_from_session(_session) do
+    routes_list(nil)
+  end
+
+  defp routes_list(current_user) when current_user == nil do
     base_list() ++
       [
         %{href: "/users/log_in", label: "Log in"}
       ]
   end
 
-  def routes_list(current_user) do
+  defp routes_list(current_user) do
     base_list() ++
       [
         %{href: "#", label: current_user.email},
