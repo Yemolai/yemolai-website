@@ -1,103 +1,37 @@
-<header class="px-4 sm:px-6 lg:px-8">
-  <div class="flex items-center justify-between border-b border-zinc-100 py-1 text-sm">
-    <div class="flex items-center gap-4">
-      <p class="inline-block text-zinc-900 px-2 font-bold leading-7">
-        Romulo<span class="hidden md:inline-block">&nbsp;Gabriel</span> Rodrigues
-      </p>
-    </div>
-    <div>
-      <div class="hidden md:flex flex-row items-center gap-x-6 font-semibold leading-6 text-zinc-900">
-        <a href="/" class="hover:text-zinc-700 underline capitalize">
-          Resume
-        </a>
-        <a
-          href="https://github.com/yemolai/yemolai-website"
-          target="_blank"
-          class="hover:text-zinc-700 underline capitalize"
-        >
-          GitHub
-        </a>
-        <a
-          href="https://www.linkedin.com/in/romulo-gabriel-rodrigues/"
-          target="_blank"
-          class="hover:text-zinc-700 underline capitalize"
-        >
-          LinkedIn
-        </a>
-        <a
-          href="https://app.reclaim.ai/m/gabriel-rodrigues/quick-meeting"
-          target="_blank"
-          class="hover:text-zinc-700 underline capitalize"
-        >
-          Schedule
-        </a>
-        <a
-          href="mailto:work@romulogabriel.dev"
-          target="_blank"
-          class="hover:text-zinc-700 underline capitalize"
-        >
-          Mail
-        </a>
-      </div>
-      <button
-        class="block md:hidden border-none bg-transparent"
-        onclick="document.getElementById('topbar-menu').open ? document.getElementById('topbar-menu').close() : document.getElementById('topbar-menu').show()"
-      >
-        &#9776; <!-- hamburger menu icon aka trigram for heaven -->
-        <div class="relative">
-          <dialog
-            id="topbar-menu"
-            class="ml-2 rounded-md border border-slate-300 transform -translate-x-full"
-          >
-            <ul class="flex flex-col items-center gap-0 font-semibold leading-6 text-zinc-600">
-              <li class="py-2 px-4 w-full hover:bg-slate-200 hover:text-zinc-900">
-                <a href="/" class="hover:text-zinc-700 underline capitalize">
-                  Resume
-                </a>
-              </li>
-              <li class="py-2 px-4 w-full hover:bg-slate-200 hover:text-zinc-900">
-                <a
-                  href="https://github.com/yemolai/yemolai-website"
-                  target="_blank"
-                  class="hover:text-zinc-700 underline capitalize"
-                >
-                  GitHub
-                </a>
-              </li>
-              <li class="py-2 px-4 w-full hover:bg-slate-200 hover:text-zinc-900">
-                <a
-                  href="https://www.linkedin.com/in/romulo-gabriel-rodrigues/"
-                  target="_blank"
-                  class="hover:text-zinc-700 underline capitalize"
-                >
-                  LinkedIn
-                </a>
-              </li>
-              <li class="py-2 px-4 w-full hover:bg-slate-200 hover:text-zinc-900">
-                <a
-                  href="https://app.reclaim.ai/m/gabriel-rodrigues/quick-meeting"
-                  target="_blank"
-                  class="hover:text-zinc-700 underline capitalize"
-                >
-                  Schedule
-                </a>
-              </li>
-              <li class="py-2 px-4 w-full hover:bg-slate-200 hover:text-zinc-900">
-                <a
-                  href="mailto:work@romulogabriel.dev"
-                  target="_blank"
-                  class="hover:text-zinc-700 underline capitalize"
-                >
-                  Mail
-                </a>
-              </li>
-            </ul>
-          </dialog>
-        </div>
-      </button>
-    </div>
+<div class="flex items-center justify-between border-b border-zinc-100 py-1 text-sm w-full max-w-full">
+  <div class="flex items-center gap-4">
+    <p class="inline-block text-zinc-900 pl-4 font-bold leading-7">
+      Romulo<span class="hidden md:inline-block">&nbsp;Gabriel</span> Rodrigues
+    </p>
   </div>
-</header>
+  <div>
+    <div class="hidden md:flex flex-row items-center gap-x-4 pr-6 font-semibold leading-6 text-zinc-900">
+      <%= for route <- @routes do %>
+        <.desktop_topbar_link href={route.href} label={route.label} />
+      <% end %>
+    </div>
+    <button
+      class="block md:hidden border-none bg-transparent"
+      onclick="document.getElementById('topbar-menu').open ? document.getElementById('topbar-menu').close() : document.getElementById('topbar-menu').show()"
+    >
+      &#9776; <!-- hamburger menu icon aka trigram for heaven -->
+      <div class="relative">
+        <dialog
+          id="topbar-menu"
+          class="ml-2 rounded-md border border-slate-300 transform -translate-x-full"
+        >
+          <ul class="flex flex-col items-center gap-0 font-semibold leading-6 text-zinc-600">
+            <%= for route <- @routes do %>
+              <.mobile_menu_item>
+                <.mobile_topbar_link href={route.href} label={route.label} />
+              </.mobile_menu_item>
+            <% end %>
+          </ul>
+        </dialog>
+      </div>
+    </button>
+  </div>
+</div>
 <main class="flex flex-col justify-center sm:block sm:w-full px-4 py-6 sm:px-8 lg:px-10 xl:px-10 max-w-[72rem]">
   <.flash_group flash={@flash} />
   <%= @inner_content %>
