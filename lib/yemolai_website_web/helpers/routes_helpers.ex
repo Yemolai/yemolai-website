@@ -3,6 +3,7 @@ defmodule YemolaiWebsiteWeb.Helpers.RoutesHelpers do
   Provide routes to build links lists
   """
   import Phoenix.LiveView.Utils
+  alias YemolaiWebsite.Accounts
 
   def init(opts), do: opts
 
@@ -12,7 +13,11 @@ defmodule YemolaiWebsiteWeb.Helpers.RoutesHelpers do
 
   def on_mount(:default, _params, session, socket) do
     socket = assign_new(socket, :routes, fn ->
-      routes_list_from_session(session)
+      if socket.assigns.current_user do
+        routes_list_from_session(session)
+      else
+        routes_list(socket.assigns.current_user)
+      end
     end)
     {:cont, socket}
   end
