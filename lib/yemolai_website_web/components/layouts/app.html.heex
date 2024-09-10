@@ -1,38 +1,7 @@
-<div class="flex items-center justify-between border-b border-zinc-100 py-1 text-sm w-full max-w-full">
-  <div class="flex items-center gap-4">
-    <p class="inline-block text-zinc-900 pl-4 font-bold leading-7">
-      Romulo<span class="hidden md:inline-block">&nbsp;Gabriel</span> Rodrigues
-    </p>
-  </div>
-  <div>
-    <div class="hidden md:flex flex-row items-center gap-x-4 pr-6 font-semibold leading-6 text-zinc-900">
-      <%= for route <- @routes do %>
-        <.desktop_topbar_link href={route.href} label={route.label} method={Map.get(route, :method)} class={Map.get(route, :class)} />
-      <% end %>
-    </div>
-    <button
-      class="block md:hidden border-none bg-transparent mr-6"
-      onclick="document.getElementById('topbar-menu').open ? document.getElementById('topbar-menu').close() : document.getElementById('topbar-menu').show()"
-    >
-      &#9776; <!-- hamburger menu icon aka trigram for heaven -->
-      <div class="relative">
-        <dialog
-          id="topbar-menu"
-          class="ml-2 rounded-md border border-slate-300 transform -translate-x-full"
-        >
-          <ul class="flex flex-col items-center gap-0 font-semibold leading-6 text-zinc-600">
-            <%= for route <- @routes do %>
-              <.mobile_menu_item>
-                <.mobile_topbar_link href={route.href} label={route.label} method={Map.get(route, :method)} class={Map.get(route, :class)} />
-              </.mobile_menu_item>
-            <% end %>
-          </ul>
-        </dialog>
-      </div>
-    </button>
-  </div>
-</div>
-<main class="flex flex-col justify-center sm:block sm:w-full px-4 py-6 sm:px-8 lg:px-10 xl:px-10 max-w-[72rem]">
+<YemolaiWebsiteWeb.TopbarComponents.topbar routes={@routes} />
+<main class="w-full pt-4 pb-8 flex flex-col items-center">
   <.flash_group flash={@flash} />
-  <%= @inner_content %>
+  <content class="px-4 max-w-[72rem]">
+    <%= @inner_content %>
+  </content>
 </main>

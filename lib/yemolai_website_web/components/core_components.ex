@@ -673,47 +673,4 @@ defmodule YemolaiWebsiteWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
-
-  attr :href, :string, required: true
-  attr :label, :string, required: true
-  attr :class, :string, default: ""
-  attr :method, :string, default: "get"
-
-  def desktop_topbar_link(assigns) do
-    ~H"""
-    <.link href={@href} method={@method} class={["hover:text-zinc-700 underline", @class]}>
-      <%= @label %>
-    </.link>
-    """
-  end
-
-  attr :href, :string, required: true
-  attr :label, :string, required: true
-  attr :class, :string, default: ""
-  attr :method, :string, default: "get"
-
-  def mobile_topbar_link(assigns) do
-    ~H"""
-    <.link
-      href={@href}
-      method={@method}
-      class={[
-        "text-[0.8125rem] leading-6 text-zinc-900 hover:text-zinc-700 underline",
-        @class
-      ]}
-    >
-      <%= @label %>
-    </.link>
-    """
-  end
-
-  slot :inner_block, required: true
-
-  def mobile_menu_item(assigns) do
-    ~H"""
-    <li class="py-2 px-4 w-full text-[0.8125rem] leading-6 text-zinc-900 hover:bg-slate-200 hover:text-zinc-900">
-      <%= render_slot(@inner_block) %>
-    </li>
-    """
-  end
 end
