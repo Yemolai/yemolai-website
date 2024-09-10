@@ -8,7 +8,7 @@ defmodule YemolaiWebsite.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"YemolaiWebsite", "contact@example.com"})
+      |> from({"YemolaiWebsite", "contact@romulogabriel.dev"})
       |> subject(subject)
       |> text_body(body)
 

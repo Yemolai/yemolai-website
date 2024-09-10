@@ -62,7 +62,7 @@ defmodule YemolaiWebsiteWeb.Router do
     end
 
     post "/users/log_in", UserSessionController, :create
-    post "/users/log_in/:token", UserSessionController, :create
+    get "/users/log_in/:token", UserSessionController, :create
   end
 
   scope "/", YemolaiWebsiteWeb do
