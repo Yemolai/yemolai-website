@@ -27,7 +27,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
             </.link>
           </:actions>
           <:actions>
-            <.button phx-disable-with="Logging in..." class="w-full">
+            <.button phx-disable-with="Logging in..." class="w-full bg-blue-800">
               Log in <span aria-hidden="true">→</span>
             </.button>
           </:actions>
@@ -41,7 +41,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
         <.simple_form for={@form} id="magic_link_form" action={~p"/users/log_in?action=magic_link"} phx-update="ignore" class="my-0 py-0">
           <.input field={@form[:email]} type="email" label="Email address" required />
           <:actions>
-            <.button phx-disable-with="Logging in..." class="w-full">
+            <.button phx-disable-with="Logging in..." class="w-full bg-blue-800">
               Send me a link <span aria-hidden="true">✉️</span>
             </.button>
           </:actions>
@@ -57,7 +57,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
-    {:ok, assign(socket, form: form, form_mode: "password"), temporary_assigns: [form: form]}
+    {:ok, assign(socket, form: form, form_mode: "magic_link"), temporary_assigns: [form: form]}
   end
 
   def handle_event("swap_form_mode", %{"target_mode" => target_mode}, socket) do
