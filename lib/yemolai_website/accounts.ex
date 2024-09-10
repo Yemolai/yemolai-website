@@ -44,6 +44,15 @@ defmodule YemolaiWebsite.Accounts do
     if User.valid_password?(user, password), do: user
   end
 
+  def get_user_by_email_token(token, context) do
+    with {:ok , query} <- UserToken.verify_email_token_query(token, context),
+      %User{} = user <- Repo.one(query) do
+        user
+      else
+        _ -> nil
+      end
+  end
+
   @doc """
   Gets a single user.
 
@@ -188,6 +197,16 @@ defmodule YemolaiWebsite.Accounts do
 
     Repo.insert!(user_token)
     UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+  end
+
+  @doc """
+  Generates and delivers a "magic" sign in link to an user's email
+  """
+  def deliver_magic_link(user, magic_link_url_fun) do
+    {hashed_token, user_token} = UserToken.build_email_token(user, "magic_link")
+    Repo.insert!(user_token)
+
+    UserNotifier.deliver_magic_link(user, magic_link_url_fun.(hashed_token))
   end
 
   @doc """

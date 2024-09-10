@@ -12,6 +12,7 @@ defmodule YemolaiWebsite.Accounts.UserToken do
   @confirm_validity_in_days 7
   @change_email_validity_in_days 7
   @session_validity_in_days 60
+  @magic_link_validity_in_days 1
 
   schema "users_tokens" do
     field :token, :binary
@@ -128,6 +129,7 @@ defmodule YemolaiWebsite.Accounts.UserToken do
 
   defp days_for_context("confirm"), do: @confirm_validity_in_days
   defp days_for_context("reset_password"), do: @reset_password_validity_in_days
+  defp days_for_context("magic_link"), do: @magic_link_validity_in_days
 
   @doc """
   Checks if the token is valid and returns its underlying lookup query.
@@ -166,6 +168,10 @@ defmodule YemolaiWebsite.Accounts.UserToken do
     from UserToken, where: [token: ^token, context: ^context]
   end
 
+  @spec by_user_and_contexts_query(
+          atom() | %{:id => any(), optional(any()) => any()},
+          :all | nonempty_maybe_improper_list()
+        ) :: Ecto.Query.t()
   @doc """
   Gets all tokens for the given user for the given contexts.
   """

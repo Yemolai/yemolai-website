@@ -2,6 +2,7 @@ defmodule YemolaiWebsiteWeb.UserSessionController do
   use YemolaiWebsiteWeb, :controller
 
   alias YemolaiWebsite.Accounts
+  alias YemolaiWebsite.Accounts.User
   alias YemolaiWebsiteWeb.UserAuth
 
   def create(conn, %{"_action" => "registered"} = params) do
@@ -12,6 +13,33 @@ defmodule YemolaiWebsiteWeb.UserSessionController do
     conn
     |> put_session(:user_return_to, ~p"/users/settings")
     |> create(params, "Password updated successfully!")
+  end
+
+  def create(conn, %{"action" => "magic_link"} = params) do
+    %{"user" => %{"email" => email}} = params
+    if user = Accounts.get_user_by_email(email) do
+      magic_link_url_fun = &"#{YemolaiWebsiteWeb.Endpoint.url()}/users/log_in/#{&1}"
+
+      Accounts.deliver_magic_link(user, magic_link_url_fun)
+    end
+
+    conn
+    |> put_flash(:info, "If we find an account for #{email} we'll send a one-time sign-in link")
+    |> redirect(to: ~p"/users/log_in")
+  end
+
+  def create(conn, %{"token" => token} = _params) do
+    case Accounts.get_user_by_email_token(token, "magic_link") do
+      %User{} = user ->
+        conn
+        |> put_flash(:info, "Welcome back!")
+        |> UserAuth.log_in_user(user)
+
+      _ ->
+        conn
+        |> put_flash(:error, "That link didn't seem to work. Please try again.")
+        |> redirect(to: ~p"/users/log_in")
+    end
   end
 
   def create(conn, params) do

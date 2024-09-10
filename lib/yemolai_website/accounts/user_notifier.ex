@@ -76,4 +76,18 @@ defmodule YemolaiWebsite.Accounts.UserNotifier do
     ==============================
     """)
   end
+
+  def deliver_magic_link(user, link_url) do
+    deliver(user.email, "Sign in to romulogabriel.dev", """
+    ==============================
+    Hi #{user.email},
+
+    Please use this link to sign in:
+
+    #{link_url}
+
+    If you didn't request this email, feel free to ignore this.
+    ==============================
+    """)
+  end
 end
