@@ -41,7 +41,7 @@ defmodule YemolaiWebsiteWeb.Helpers.RoutesHelpers do
   defp routes_list(current_user) do
     base_list() ++
       [
-        %{href: "#", label: current_user.email},
+        %{href: "#", label: current_user.username, class: "lowercase no-underline"},
         %{href: "/users/settings", label: "Settings"},
         %{href: "/users/log_out", label: "Log out", method: "delete"}
       ]

@@ -10,7 +10,16 @@ defmodule YemolaiWebsiteWeb.UserSettingsLive do
       <:subtitle>Manage your account email address and password settings</:subtitle>
     </.header>
 
-    <div class="space-y-12 divide-y">
+    <div class="space-y-8 divide-y">
+      <p class="text-center text-pretty font-light text-sm">
+        Signed in as
+        <span class="font-semibold">
+          <%= @current_user.first_name %> (<%= @current_user.username %>)
+        </span>
+      </p>
+    </div>
+
+    <div class="space-y-8 divide-y">
       <div>
         <.simple_form
           for={@email_form}

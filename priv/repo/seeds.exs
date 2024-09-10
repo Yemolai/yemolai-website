@@ -14,13 +14,15 @@ alias YemolaiWebsite.Repo
 alias YemolaiWebsite.Accounts
 
 defmodule Create do
-  def user(email, password) do
-    user(email, password, true)
+  def user(email, password, username, first_name) do
+    user(email, password, username, first_name, true)
   end
 
-  def user(email, password, active) when active == true do
+  def user(email, password, username, first_name, active) when active == true do
     {:ok, user} =
       Accounts.register_user(%{
+        first_name: first_name,
+        username: username,
         email: email,
         password: password
       })
@@ -32,8 +34,10 @@ defmodule Create do
     {:ok, created_user}
   end
 
-  def user(email, password, active) when active != true do
+  def user(email, password, username, first_name, active) when active != true do
     Accounts.register_user(%{
+      first_name: first_name,
+      username: username,
       email: email,
       password: password
     })
@@ -41,5 +45,5 @@ defmodule Create do
 end
 
 if Mix.env() == :dev do
-  Create.user("admin@romulogabriel.com", "testpass12345")
+  Create.user("admin@romulogabriel.com", "testpass12345", "rgadmin", "Romulo")
 end

@@ -4,6 +4,11 @@ defmodule YemolaiWebsite.Accounts.User do
 
   schema "users" do
     field :email, :string
+    field :first_name, :string
+    field :middle_names, :string, default: ""
+    field :last_name, :string, default: ""
+    field :avatar, :integer, default: 1
+    field :username, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
@@ -36,9 +41,11 @@ defmodule YemolaiWebsite.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:first_name, :middle_names, :last_name, :username, :email, :password])
+    |> validate_required([:first_name, :username])
     |> validate_email(opts)
     |> validate_password(opts)
+    |> unique_constraint(:username)
   end
 
   defp validate_email(changeset, opts) do
