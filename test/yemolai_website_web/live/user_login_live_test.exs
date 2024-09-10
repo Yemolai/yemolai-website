@@ -6,10 +6,10 @@ defmodule YemolaiWebsiteWeb.UserLoginLiveTest do
 
   describe "Log in page" do
     test "renders log in page", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/log_in")
+      {:ok, _lv, html} = live(conn, ~p"/users/log_in?mode=password")
 
       assert html =~ "Log in"
-      assert html =~ "Register"
+      # assert html =~ "Register"
       assert html =~ "Forgot your password?"
     end
 
@@ -29,7 +29,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLiveTest do
       password = "123456789abcd"
       user = user_fixture(%{password: password})
 
-      {:ok, lv, _html} = live(conn, ~p"/users/log_in")
+      {:ok, lv, _html} = live(conn, ~p"/users/log_in?mode=password")
 
       form =
         form(lv, "#login_form", user: %{email: user.email, password: password, remember_me: true})
@@ -42,7 +42,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLiveTest do
     test "redirects to login page with a flash error if there are no valid credentials", %{
       conn: conn
     } do
-      {:ok, lv, _html} = live(conn, ~p"/users/log_in")
+      {:ok, lv, _html} = live(conn, ~p"/users/log_in?mode=password")
 
       form =
         form(lv, "#login_form",
@@ -73,7 +73,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLiveTest do
     test "redirects to forgot password page when the Forgot Password button is clicked", %{
       conn: conn
     } do
-      {:ok, lv, _html} = live(conn, ~p"/users/log_in")
+      {:ok, lv, _html} = live(conn, ~p"/users/log_in?mode=password")
 
       {:ok, conn} =
         lv

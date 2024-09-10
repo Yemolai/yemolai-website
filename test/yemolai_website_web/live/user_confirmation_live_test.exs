@@ -8,7 +8,7 @@ defmodule YemolaiWebsiteWeb.UserConfirmationLiveTest do
   alias YemolaiWebsite.Repo
 
   setup do
-    %{user: user_fixture()}
+    %{user: user_fixture(%{confirmed: false})}
   end
 
   describe "Confirm user" do

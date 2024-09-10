@@ -27,18 +27,28 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
             </.link>
           </:actions>
           <:actions>
-            <.button phx-disable-with="Logging in..." class="w-full bg-blue-800">
+            <.button phx-disable-with="Logging in..." class="w-full">
               Log in <span aria-hidden="true">→</span>
             </.button>
           </:actions>
         </.simple_form>
-        <.button class="w-full mt-3 bg-blue-700" phx-click="swap_form_mode" phx-value-target_mode="magic_link">
+        <.button
+          class="w-full mt-3 bg-brand"
+          phx-click="swap_form_mode"
+          phx-value-target_mode="magic_link"
+        >
           Use Magic Link instead
         </.button>
       </div>
 
       <div :if={@form_mode == "magic_link"}>
-        <.simple_form for={@form} id="magic_link_form" action={~p"/users/log_in?action=magic_link"} phx-update="ignore" class="my-0 py-0">
+        <.simple_form
+          for={@form}
+          id="magic_link_form"
+          action={~p"/users/log_in?action=magic_link"}
+          phx-update="ignore"
+          class="my-0 py-0"
+        >
           <.input field={@form[:email]} type="email" label="Email address" required />
           <:actions>
             <.button phx-disable-with="Logging in..." class="w-full bg-blue-700">
@@ -46,7 +56,11 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
             </.button>
           </:actions>
         </.simple_form>
-        <.button class="w-full mt-3 bg-blue-600" phx-click="swap_form_mode" phx-value-target_mode="password">
+        <.button
+          class="w-full mt-3 bg-brand"
+          phx-click="swap_form_mode"
+          phx-value-target_mode="password"
+        >
           Use Password instead
         </.button>
       </div>
@@ -54,10 +68,11 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
     """
   end
 
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
-    {:ok, assign(socket, form: form, form_mode: "magic_link"), temporary_assigns: [form: form]}
+    form_mode = Map.get(params, "mode", "magic_link")
+    {:ok, assign(socket, form: form, form_mode: form_mode), temporary_assigns: [form: form]}
   end
 
   def handle_event("swap_form_mode", %{"target_mode" => target_mode}, socket) do
