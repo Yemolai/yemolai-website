@@ -32,7 +32,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
             </.button>
           </:actions>
         </.simple_form>
-        <.button class="w-full mt-3 bg-blue-600" phx-click="swap_form_mode" phx-value-target_mode="magic_link">
+        <.button class="w-full mt-3 bg-blue-700" phx-click="swap_form_mode" phx-value-target_mode="magic_link">
           Use Magic Link instead
         </.button>
       </div>
@@ -41,7 +41,7 @@ defmodule YemolaiWebsiteWeb.UserLoginLive do
         <.simple_form for={@form} id="magic_link_form" action={~p"/users/log_in?action=magic_link"} phx-update="ignore" class="my-0 py-0">
           <.input field={@form[:email]} type="email" label="Email address" required />
           <:actions>
-            <.button phx-disable-with="Logging in..." class="w-full bg-blue-800">
+            <.button phx-disable-with="Logging in..." class="w-full bg-blue-700">
               Send me a link <span aria-hidden="true">✉️</span>
             </.button>
           </:actions>
