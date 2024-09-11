@@ -48,19 +48,15 @@ defmodule YemolaiWebsiteWeb.TopbarComponents do
   end
 
   attr :routes, :list, required: true
+  attr :title, :string
   slot :title_block
 
   def topbar(assigns) do
-    IO.inspect(assigns, label: "topbar assigns")
     ~H"""
     <div class="flex items-center justify-between border-b border-zinc-100 py-1 text-sm w-full max-w-full">
       <div class="flex items-center gap-4">
         <p class="inline-block text-zinc-900 pl-4 font-bold leading-7">
-          <%= if @title_block do %>
-            <%= @title_block %>
-          <% else %>
-            Romulo<span class="hidden md:inline-block">&nbsp;Gabriel</span> Rodrigues
-          <% end %>
+          <%= render_slot @title_block %>
         </p>
       </div>
       <div>

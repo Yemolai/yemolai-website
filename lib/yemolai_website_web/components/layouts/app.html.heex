@@ -1,4 +1,8 @@
-<YemolaiWebsiteWeb.TopbarComponents.topbar routes={@routes} />
+<YemolaiWebsiteWeb.TopbarComponents.topbar routes={@routes}>
+  <:title_block>
+    Romulo<span class="hidden md:inline-block">&nbsp;Gabriel</span> Rodrigues
+  </:title_block>
+</YemolaiWebsiteWeb.TopbarComponents.topbar>
 <main class="w-full pt-4 pb-8 flex flex-col items-center">
   <.flash_group flash={@flash} />
   <content class="px-4 max-w-[72rem]">
