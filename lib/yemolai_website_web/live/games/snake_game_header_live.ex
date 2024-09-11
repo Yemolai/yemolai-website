@@ -8,13 +8,8 @@ defmodule YemolaiWebsiteWeb.Games.SnakeGameHeaderLive do
     {:ok,
      assign(socket,
        current_user: Map.get(session, "current_user", nil),
-       routes: Map.get(session, "routes", []),
-       is_modal_open: false
+       routes: Map.get(session, "routes", [])
      )}
-  end
-
-  def handle_event("leaderboard_modal", %{"open" => open}, socket) do
-    {:noreply, assign(socket, is_modal_open: open == "true")}
   end
 
   def render(assigns) do
@@ -24,13 +19,29 @@ defmodule YemolaiWebsiteWeb.Games.SnakeGameHeaderLive do
         Snake Game
       </:title_block>
     </.topbar>
-    <.button phx-click="leaderboard_modal" phx-value-open="true">Show Leaderboard</.button>
-    <.live_component module={YemolaiWebsiteWeb.Live.ModalLiveComponent} id={"leaderboard_modal"} is_open={@is_modal_open}>
-      <div class="flex justify-between">
-        <p>Leaderboard</p>
-        <.button phx-click="leaderboard_modal" phx-value-open="false">&times;</.button>
-      </div>
-    </.live_component>
+    <.button phx-click={JS.dispatch("open-modal", to: "#leaderboard-modal")}>
+      Show Leaderboard
+    </.button>
+    <.modal_dialog id="leaderboard-modal" title={"Leaderboard"} class={"min-w-[32rem] max-w-full"}>
+      <ul>
+        <li>Item 01</li>
+        <li>Item 02</li>
+        <li>Item 03</li>
+        <li>Item 04</li>
+        <li>Item 05</li>
+        <li>Item 06</li>
+        <li>Item 07</li>
+        <li>Item 08</li>
+        <li>Item 09</li>
+        <li>Item 10</li>
+        <li>Item 11</li>
+        <li>Item 12</li>
+        <li>Item 13</li>
+        <li>Item 14</li>
+        <li>Item 15</li>
+        <li>Item 16</li>
+      </ul>
+    </.modal_dialog>
     """
   end
 end
