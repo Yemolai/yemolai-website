@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href={~p"/assets/snake_game.css"} />
-<%= live_render(@conn, YemolaiWebsiteWeb.Games.SnakeGameHeaderLive, session: %{"current_user" => @current_user, "routes" => @routes}) %>
+<%= live_render(@conn, YemolaiWebsiteWeb.Games.SnakeGameHeaderLive, session: %{"current_user" => @current_user, "routes" => @routes}, layout: false) %>
 <main class="w-full flex flex-col items-center">
   <div id="game-container">
     <canvas id="game-board"></canvas>

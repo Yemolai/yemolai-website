@@ -56,6 +56,16 @@ defmodule YemolaiWebsiteWeb do
 
       on_mount YemolaiWebsiteWeb.Helpers.RoutesHelpers
       unquote(html_helpers())
+      unquote(view_helpers())
+    end
+  end
+
+  def layoutless_live_view do
+    quote do
+      use Phoenix.LiveView
+      on_mount YemolaiWebsiteWeb.Helpers.RoutesHelpers
+      unquote(html_helpers())
+      unquote(view_helpers())
     end
   end
 
@@ -64,6 +74,7 @@ defmodule YemolaiWebsiteWeb do
       use Phoenix.LiveComponent
 
       unquote(html_helpers())
+      unquote(view_helpers())
     end
   end
 
@@ -93,6 +104,17 @@ defmodule YemolaiWebsiteWeb do
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
+    end
+  end
+
+  defp view_helpers do
+    quote do
+      # Import common functionality
+      import Phoenix.LiveView.Helpers
+      import Phoenix.LiveView
+
+      # Include shared imports and aliases for views
+      alias YemolaiWebsiteWeb.Router.Helpers, as: Routes
     end
   end
 

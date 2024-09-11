@@ -1,5 +1,5 @@
 defmodule YemolaiWebsiteWeb.Games.SnakeGameHeaderLive do
-  use Phoenix.LiveView
+  use YemolaiWebsiteWeb, :layoutless_live_view
 
   import YemolaiWebsiteWeb.TopbarComponents
   import YemolaiWebsiteWeb.CoreComponents
@@ -25,12 +25,12 @@ defmodule YemolaiWebsiteWeb.Games.SnakeGameHeaderLive do
       </:title_block>
     </.topbar>
     <.button phx-click="leaderboard_modal" phx-value-open="true">Show Leaderboard</.button>
-    <dialog open={@is_modal_open}>
+    <.live_component module={YemolaiWebsiteWeb.Live.ModalLiveComponent} id={"leaderboard_modal"} is_open={@is_modal_open}>
       <div class="flex justify-between">
         <p>Leaderboard</p>
         <.button phx-click="leaderboard_modal" phx-value-open="false">&times;</.button>
       </div>
-    </dialog>
+    </.live_component>
     """
   end
 end
