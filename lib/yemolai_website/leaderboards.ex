@@ -21,9 +21,16 @@ defmodule YemolaiWebsite.Leaderboards do
     |> Repo.preload(:user)
   end
 
-  def get_game_highscores(game) do
-    Repo.all(Score, game: game)
-    |> Repo.preload(:user)
+  def get_game_highscores(game, records_limit \\ 10) do
+    query =
+      from s in Score,
+        join: u in assoc(s, :user),
+        select: %{points: s.points, username: u.username},
+        order_by: [desc: s.points],
+        where: s.game == ^game,
+        limit: ^records_limit
+
+    Repo.all(query)
   end
 
   def register_game_score(attrs) do
