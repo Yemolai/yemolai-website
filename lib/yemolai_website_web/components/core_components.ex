@@ -718,7 +718,7 @@ defmodule YemolaiWebsiteWeb.CoreComponents do
       <%!-- This script setups up this dialog. Using the global script mounted by assets/js/utils/setup_modal.js --%>
       <script>
         document.addEventListener('DOMContentLoaded', () => {
-          utils.setup_modal.init('<%= @id %>', { closeOnBackropClick: "<%= @close_on_click_away %>" })
+          utils.setup_modal.init('<%= @id %>', { closeOnBackdropClick: <%= @close_on_click_away %> })
         })
       </script>
     """
