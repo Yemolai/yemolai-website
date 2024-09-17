@@ -11,21 +11,26 @@ defmodule YemolaiWebsite.Leaderboards do
     Repo.get_by(Score, user_id: user.id)
   end
 
-  def get_user_game_highscores(user_id, game) when is_number(user_id) do
-    Repo.get_by(Score, user_id: user_id, game: game)
-    |> Repo.preload(:user)
+  def get_user_game_highscore(user, game) when is_struct(user) do
+    get_user_game_highscore(user.id, game)
   end
 
-  def get_user_game_highscores(user, game) do
-    Repo.get_by(Score, user: user, game: game)
-    |> Repo.preload(:user)
+  def get_user_game_highscore(user_id, game) when is_number(user_id) do
+    query =
+      from s in Score,
+        join: u in assoc(s, :user),
+        select: %{id: s.id, points: s.points, username: u.username},
+        order_by: [desc: s.points],
+        where: s.game == ^game and s.user_id == ^user_id
+
+    Repo.one(query)
   end
 
   def get_game_highscores(game, records_limit \\ 10) do
     query =
       from s in Score,
         join: u in assoc(s, :user),
-        select: %{points: s.points, username: u.username},
+        select: %{id: s.id, points: s.points, username: u.username},
         order_by: [desc: s.points],
         where: s.game == ^game,
         limit: ^records_limit
@@ -55,7 +60,7 @@ defmodule YemolaiWebsite.Leaderboards do
       )
     rescue
       Ecto.StaleEntryError ->
-        {:ok, get_user_game_highscores(attrs.user_id, attrs.game)}
+        {:ok, get_user_game_highscore(attrs.user_id, attrs.game)}
     end
   end
 end

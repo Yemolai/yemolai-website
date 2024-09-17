@@ -124,6 +124,7 @@ function snakeGameOver() {
   savePreviousScores();
   renderHighest();
   draw();
+  document.dispatchEvent(new CustomEvent("phx-relay", { detail: { name: "snake_game_over", payload: { points } } }))
 }
 
 function resizeCanvas() {
