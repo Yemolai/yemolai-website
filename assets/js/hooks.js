@@ -3,13 +3,14 @@ let Hooks = {};
 Hooks.RelayHook = {
   mounted() {
     relay = this;
-    document.addEventListener("phx-relay", (event) => {
-      console.log("phx-relay");
-      const { name, payload } = event.detail || {};
-      console.log({name, payload})
-      relay.pushEvent(name, payload);
-    });
+    this.eventHandler = (event) => {
+      relay.pushEvent(event.detail.name, event.detail.payload);
+    }
+    document.addEventListener("phx-relay", this.eventHandler);
   },
+  destroyed() {
+    document.removeEventListener("phx-relay", this.eventHandler);
+  }
 };
 
 Hooks.MountedHook = {

@@ -25,22 +25,20 @@ defmodule YemolaiWebsiteWeb.Games.SnakeGameLive do
       when socket.assigns.current_user != nil do
     current_user = socket.assigns.current_user
     Leaderboards.register_game_score(%{game: "snake", points: points, user_id: current_user.id})
-    send(self(), :snake_game_init)
-    {
-      :noreply,
+
+    updated_socket =
       assign(socket,
         leaderboard: Leaderboards.get_game_highscores("snake"),
         personal_best: Leaderboards.get_user_game_highscore(current_user, "snake")
       )
+
+    {
+      :noreply,
+      push_event(updated_socket, "open_modal", %{query: "#leaderboard-modal"})
     }
   end
 
   def handle_event("snake_game_over", _params, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_info(:snake_game_init, socket) do
-    JS.dispatch("snake-game-init", to: "document")
     {:noreply, socket}
   end
 

@@ -58,7 +58,7 @@ const paddedScoreFormatter = new Intl.NumberFormat(undefined, {
 });
 
 function formatScore(score, { padded } = {}) {
-  if (padded) paddedScoreFormatter.format(score)
+  if (padded) paddedScoreFormatter.format(score);
   return scoreFormatter.format(score);
 }
 
@@ -69,7 +69,8 @@ function renderPoints(points) {
 
 function loadPreviousScores() {
   try {
-    const saveFile = localStorage.getItem(SCORES_STORAGE_KEY) ?? '{"scores":[]}';
+    const saveFile =
+      localStorage.getItem(SCORES_STORAGE_KEY) ?? '{"scores":[]}';
     previousScores.scores = JSON.parse(saveFile).scores;
   } catch (err) {
     console.error("Something went wrong loading the scores", err);
@@ -118,13 +119,21 @@ function snakeGameStart() {
   startGameLoop();
 }
 
+function updateScoreboard() {
+  document.dispatchEvent(
+    new CustomEvent("phx-relay", {
+      detail: { name: "snake_game_over", payload: { points } },
+    })
+  );
+}
+
 function snakeGameOver() {
+  updateScoreboard();
   state = StateEnum.GAME_OVER;
   previousScores.scores.push({ points, dt: new Date().getTime() });
   savePreviousScores();
   renderHighest();
   draw();
-  document.dispatchEvent(new CustomEvent("phx-relay", { detail: { name: "snake_game_over", payload: { points } } }))
 }
 
 function resizeCanvas() {
@@ -421,9 +430,9 @@ window.snakeGameControls = {
   },
   input(code, toKeyUp = false) {
     if (toKeyUp) {
-      handleKeyUpEvent({ code })
+      handleKeyUpEvent({ code });
     } else {
-      handleKeyDownEvent({ code })
+      handleKeyDownEvent({ code });
     }
-  }
+  },
 };

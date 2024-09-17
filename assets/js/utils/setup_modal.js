@@ -46,6 +46,26 @@ function init(elementId, { closeOnBackdropClick = false } = {}) {
   }
 }
 
+window.addEventListener("phx:open_modal", (event) => {
+  if (!event?.detail?.query) {
+    throw new Error("no query in the event details to target an element");
+  }
+  const el = document.querySelector(event.detail.query);
+  if (el && el.nodeName && el.nodeName == "DIALOG" && !el.open) {
+    el.showModal();
+  }
+});
+
+window.addEventListener("phx:close_modal", (event) => {
+  if (!event?.detail?.query) {
+    throw new Error("no query in the event details to target an element");
+  }
+  const el = document.querySelector(event.detail.query);
+  if (el && el.nodeName && el.nodeName == "DIALOG" && el.open) {
+    el.close();
+  }
+})
+
 export default {
   init,
 };

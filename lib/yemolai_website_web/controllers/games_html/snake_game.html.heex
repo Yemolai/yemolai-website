@@ -1,49 +1,53 @@
 <link rel="stylesheet" type="text/css" href={~p"/assets/snake_game.css"} />
-<%= live_render(@conn, YemolaiWebsiteWeb.Games.SnakeGameLive, session: %{"current_user" => @current_user, "routes" => @routes}, layout: false) %>
+<%= live_render(@conn, YemolaiWebsiteWeb.Games.SnakeGameLive,
+  session: %{"current_user" => @current_user, "routes" => @routes},
+  layout: false
+) %>
 <main class="w-full flex flex-col items-center" id="snake-main">
   <div id="game-container">
     <canvas id="game-board"></canvas>
-    <div class="info-row">
-      <p><small><strong>Score:</strong>&nbsp;<span id="game-points">0</span></small></p>
-      <p><small>Esc to pause</small></p>
+  </div>
+  <div class="w-full px-6 md:px-10 info-row">
+    <p><small><strong>Score:</strong>&nbsp;<span id="game-points">0</span></small></p>
+    <div class="flex gap-x-2">
+      <button
+        class="px-2 py-0 text-xs text-white rounded-md bg-black"
+        onclick="document.querySelector('#leaderboard-modal').showModal();"
+      >
+        Leaderboard
+      </button>
       <p><small><strong>Highest:</strong>&nbsp;<span id="game-record">0</span></small></p>
     </div>
-    <div class="input-container">
-      <div class="d-pad">
-        <button
-          class="d-pad-button escape"
-          onclick="window.snakeGameControls.input('Escape', true)"
-        >
-          Esc
-        </button>
-        <button class="d-pad-button up" onclick="window.snakeGameControls.input('ArrowUp')">
-          ↑
-        </button>
-        <button class="d-pad-button left" onclick="window.snakeGameControls.input('ArrowLeft')">
-          ←
-        </button>
-        <button
-          class="d-pad-button center"
-          onclick="window.snakeGameControls.input('Space', true)"
-        >
-          ␣
-        </button>
-        <button class="d-pad-button right" onclick="window.snakeGameControls.input('ArrowRight')">
-          →
-        </button>
-        <button class="d-pad-button down" onclick="window.snakeGameControls.input('ArrowDown')">
-          ↓
-        </button>
-      </div>
+  </div>
+  <div class="w-full px-6 text-xs text-center">
+    <p><small>press Esc to pause</small></p>
+  </div>
+  <div class="input-container">
+    <div class="d-pad">
+      <button class="d-pad-button escape" onclick="window.snakeGameControls.input('Escape', true)">
+        Esc
+      </button>
+      <button class="d-pad-button up" onclick="window.snakeGameControls.input('ArrowUp')">
+        ↑
+      </button>
+      <button class="d-pad-button left" onclick="window.snakeGameControls.input('ArrowLeft')">
+        ←
+      </button>
+      <button class="d-pad-button center" onclick="window.snakeGameControls.input('Space', true)">
+        ␣
+      </button>
+      <button class="d-pad-button right" onclick="window.snakeGameControls.input('ArrowRight')">
+        →
+      </button>
+      <button class="d-pad-button down" onclick="window.snakeGameControls.input('ArrowDown')">
+        ↓
+      </button>
     </div>
   </div>
 </main>
-<div class="w-full text-center">
-  <.button onclick="document.querySelector('#leaderboard-modal').showModal();">
-    Leaderboard
-  </.button>
-</div>
-<script src={~p"/assets/snake_game.js"}></script>
+
+<script src={~p"/assets/snake_game.js"}>
+</script>
 <script type="text/javascript">
   window.snakeGameControls.init();
 </script>
