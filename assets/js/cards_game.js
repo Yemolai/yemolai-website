@@ -1,10 +1,31 @@
+const suits = ['♠', '♥', '♦', '♣'];
+const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
 const gameState = {
-  deck: ['2H', '3D', '4S', '5C', '6H', '7D', '8S', '9C', '10H', 'JH', 'QH', 'KH', 'AH'],
+  deck: [],
   playerHand: [],
   leftPlayerHand: [],
   rightPlayerHand: [],
-  oppositePlayerHand: []
+  oppositePlayerHand: [],
+  discardPile: []
 };
+
+function initializeDeck() {
+  gameState.deck = [];
+  suits.forEach(suit => {
+    ranks.forEach(rank => {
+      gameState.deck.push({ suit, rank });
+    });
+  });
+  shuffleDeck();
+}
+
+function shuffleDeck() {
+  for (let i = gameState.deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [gameState.deck[i], gameState.deck[j]] = [gameState.deck[j], gameState.deck[i]];
+  }
+}
 
 function updateGameState(newState) {
   Object.assign(gameState, newState);
@@ -16,11 +37,13 @@ function renderGame() {
   const leftPlayerHand = document.getElementById('left-player-hand');
   const rightPlayerHand = document.getElementById('right-player-hand');
   const oppositePlayerHand = document.getElementById('opposite-player-hand');
+  const discardPile = document.getElementById('discard-pile');
 
   playerHand.innerHTML = '';
   leftPlayerHand.innerHTML = '';
   rightPlayerHand.innerHTML = '';
   oppositePlayerHand.innerHTML = '';
+  discardPile.innerHTML = '';
 
   gameState.playerHand.forEach(card => {
     const cardElement = createCardElement(card);
@@ -41,12 +64,17 @@ function renderGame() {
     const cardElement = createCardElement(card);
     oppositePlayerHand.appendChild(cardElement);
   });
+
+  gameState.discardPile.forEach(card => {
+    const cardElement = createCardElement(card);
+    discardPile.appendChild(cardElement);
+  });
 }
 
 function createCardElement(card) {
   const cardElement = document.createElement('div');
-  cardElement.className = 'card';
-  cardElement.textContent = card;
+  cardElement.className = `card ${card.suit === '♥' || card.suit === '♦' ? 'red' : 'black'}`;
+  cardElement.innerHTML = `<div>${card.rank}</div><div class="suit">${card.suit}</div>`;
   return cardElement;
 }
 
@@ -79,3 +107,7 @@ document.getElementById('deck').addEventListener('click', () => {
   moveCard(card, document.getElementById('deck'), document.getElementById('player-hand'));
   updateGameState(gameState);
 });
+
+// Initialize the deck and shuffle it
+initializeDeck();
+updateGameState(gameState);
