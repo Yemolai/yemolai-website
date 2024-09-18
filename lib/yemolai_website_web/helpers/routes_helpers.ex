@@ -13,10 +13,11 @@ defmodule YemolaiWebsiteWeb.Helpers.RoutesHelpers do
 
   def on_mount(:default, _params, session, socket) do
     socket = assign_new(socket, :routes, fn ->
-      if socket.assigns.current_user do
-        routes_list_from_session(session)
+      current_user = Map.get(socket.assigns, "current_user")
+      if current_user do
+        routes_list(current_user)
       else
-        routes_list(socket.assigns.current_user)
+        routes_list_from_session(session)
       end
     end)
     {:cont, socket}

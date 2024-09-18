@@ -674,46 +674,53 @@ defmodule YemolaiWebsiteWeb.CoreComponents do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
 
-  attr :href, :string, required: true
-  attr :label, :string, required: true
+  attr :id, :string, required: true
+  attr :close_on_click_away, :boolean, default: false
   attr :class, :string, default: ""
-  attr :method, :string, default: "get"
-
-  def desktop_topbar_link(assigns) do
-    ~H"""
-    <.link href={@href} method={@method} class={["hover:text-zinc-700 underline", @class]}>
-      <%= @label %>
-    </.link>
-    """
-  end
-
-  attr :href, :string, required: true
-  attr :label, :string, required: true
-  attr :class, :string, default: ""
-  attr :method, :string, default: "get"
-
-  def mobile_topbar_link(assigns) do
-    ~H"""
-    <.link
-      href={@href}
-      method={@method}
-      class={[
-        "text-[0.8125rem] leading-6 text-zinc-900 hover:text-zinc-700 underline",
-        @class
-      ]}
-    >
-      <%= @label %>
-    </.link>
-    """
-  end
-
+  attr :title, :string
+  slot :header_block
   slot :inner_block, required: true
 
-  def mobile_menu_item(assigns) do
+  @doc """
+  Modal Dialog element that can be triggered by JS.dispatch, supports the events:
+   - open_modal
+   - close_modal
+   - toggle_modal
+
+   trigger with:
+   ```
+   <button phx-click={JS.dispatch("open_modal", to: "#@id")}>Open Modal</button>
+   <button phx-click={JS.dispatch("close_modal", to: "#@id")}>Close Modal</button>
+   <button phx-click={JS.dispatch("toggle_modal", to: "#@id")}>Toggle Modal</button>
+   ```
+   where @id is this dialog id
+  """
+  def modal_dialog(assigns) do
     ~H"""
-    <li class="py-2 px-4 w-full text-[0.8125rem] leading-6 text-zinc-900 hover:bg-slate-200 hover:text-zinc-900">
-      <%= render_slot(@inner_block) %>
-    </li>
+      <dialog id={@id} class={["px-3 py-2 rounded-md shadow-md " <> @class]}>
+        <%= if @header_block != [] do %>
+          <%= render_slot @header_block %>
+        <% else %>
+          <div class="flex justify-between gap-2 pl-3 pr-0 py-0">
+            <p class="pt-2 text-pretty font-semibold text-lg"><%= @title %></p>
+            <button
+              phx-click={JS.dispatch("close-modal", to: "##{@id}")}
+              class="bg-transparent pb-2 px-1 text-black text-lg font-bold hover:text-gray-600"
+            >
+              &times;
+            </button>
+          </div>
+        <% end %>
+        <div class="px-3 pt-2 pb-6">
+          <%= render_slot @inner_block %>
+        </div>
+      </dialog>
+      <%!-- This script setups up this dialog. Using the global script mounted by assets/js/utils/setup_modal.js --%>
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          utils.setup_modal.init('<%= @id %>', { closeOnBackdropClick: <%= @close_on_click_away %> })
+        })
+      </script>
     """
   end
 end
