@@ -25,12 +25,20 @@ const gameState = {
   discardPile: [],
 };
 
-function shuffleDeck() {
-  for (let cardAIdx = gameState.deck.length - 1; cardAIdx > 0; cardAIdx -= 1) {
-    const cardBIdx = Math.floor(Math.random() * (cardAIdx + 1));
-    const cardA = gameState.deck[cardAIdx];
-    const cardB = gameState.deck[cardBIdx];
-    [gameState.deck[cardAIdx], gameState.deck[cardBIdx]] = [cardA, cardB];
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 }
 
@@ -41,7 +49,7 @@ function initializeDeck() {
       gameState.deck.push({ suit, rank });
     });
   });
-  shuffleDeck();
+  shuffle(gameState.deck);
 }
 
 function distributePlayerHands() {
@@ -52,7 +60,7 @@ function distributePlayerHands() {
     gameState.rightPlayerHand,
   ];
   const playerCount = 4;
-  const initialHandSize = 7;
+  const initialHandSize = 9;
   for (let handSize = 0; handSize < initialHandSize; handSize += 1) {
     for (let playerIdx = 0; playerIdx < playerCount; playerIdx += 1) {
       const card = gameState.deck.pop();
@@ -72,6 +80,26 @@ function updateGameState(newState) {
   renderGame();
 }
 
+function discardCard(card) {
+  const { rank, suit } = card;
+  const handCard = gameState.playerHand.find(
+    (hc) => hc.rank == rank && hc.suit == suit
+  );
+  if (handCard) {
+    gameState.discardPile.push(handCard);
+    gameState.playerHand.splice(gameState.playerHand.indexOf(handCard), 1);
+  }
+  renderGame();
+}
+
+function handlePlayerCardClick(event) {
+  console.log({ target: event.target });
+  discardCard({
+    rank: event.target.dataset.rank,
+    suit: event.target.dataset.suit,
+  });
+}
+
 function renderGame() {
   const playerHand = document.getElementById("player-hand");
   const leftPlayerHand = document.getElementById("left-player-hand");
@@ -85,27 +113,25 @@ function renderGame() {
   oppositePlayerHand.innerHTML = "";
   discardPile.innerHTML = "";
 
-  console.log({ gameState });
-
   gameState.playerHand.forEach((card, handIdx, hand) => {
     const handTotal = hand.length;
     const cardElement = createCardElement({ ...card, handIdx, handTotal });
+    cardElement.addEventListener("click", handlePlayerCardClick);
     playerHand.appendChild(cardElement);
   });
 
   [
-    gameState.leftPlayerHand,
-    gameState.oppositePlayerHand,
-    gameState.rightPlayerHand,
-  ].forEach((playerHand) => {
-    playerHand.forEach((card, handIdx) => {
-      const handTotal = playerHand.length;
+    [gameState.leftPlayerHand, leftPlayerHand],
+    [gameState.oppositePlayerHand, oppositePlayerHand],
+    [gameState.rightPlayerHand, rightPlayerHand],
+  ].forEach(([handState, handArea]) => {
+    handState.forEach((card, handIdx) => {
+      const handTotal = handState.length;
       const cardElement = createCardBackElement({
-        ...card,
         handIdx,
         handTotal,
       });
-      playerHand.appendChild(cardElement);
+      handArea.appendChild(cardElement);
     });
   });
 
@@ -124,9 +150,12 @@ function createCardElement(card) {
   const cardElement = document.createElement("div");
   if (suit)
     cardElement.className = `card ${redSuits.includes(suit) ? "red" : "black"}`;
-  if (suit && rank)
+  if (suit && rank) {
+    cardElement.dataset.suit = suit;
+    cardElement.dataset.rank = rank;
     cardElement.innerHTML = `<div class="rank">${rank}</div><div class="suit">${suit}</div>`;
-  if (faceDown) cardElement.className = "card face-down-card";
+  }
+  if (faceDown == true) cardElement.className = "card face-down-card";
   if (handIdx !== undefined && handTotal) {
     cardElement.style.setProperty("--hand-idx", `${handIdx}`);
     cardElement.style.setProperty("--hand-total", `${handTotal}`);
@@ -135,7 +164,7 @@ function createCardElement(card) {
 }
 
 function createCardBackElement(card) {
-  return createCardElement({ ...card, faceDown });
+  return createCardElement({ ...card, faceDown: true });
 }
 
 function moveAndFlipCard(card, fromElement, toElement) {
@@ -143,7 +172,7 @@ function moveAndFlipCard(card, fromElement, toElement) {
   const cardElement = createCardElement(card);
   const backCardElement = createCardBackElement();
   cardElement.classList.add("moving");
-  cardElement.classList.add("moving");
+  backCardElement.classList.add("moving");
   gameBoard.appendChild(cardElement);
   gameBoard.appendChild(backCardElement);
 
@@ -168,7 +197,7 @@ function moveAndFlipCard(card, fromElement, toElement) {
       () => {
         cardElement.remove();
         gameState.playerHand.push(card);
-        toElement.appendChild(createCardElement(card));
+        renderGame();
       },
       { once: true }
     );

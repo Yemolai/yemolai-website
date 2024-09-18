@@ -69,6 +69,7 @@
   left: var(--hand-area-edge-padding);
   width: var(--pile-height);
   height: var(--hand-area-width);
+  writing-mode: sideways-lr;
 }
 
 #right-player-hand {
@@ -78,6 +79,7 @@
   left: calc(100% - var(--pile-height) - var(--hand-area-edge-padding));
   width: var(--pile-height);
   height: var(--hand-area-width);
+  writing-mode: sideways-rl;
 }
 
 #opposite-player-hand {
@@ -131,7 +133,13 @@
 }
 
 .hand .card {
-  margin-left: calc(var(--card-width) * -0.75);
+  margin-left: calc(var(--hand-total) * calc(-0.08 * var(--card-width)));
+}
+
+.side.hand .card{
+  margin-left: unset;
+  margin-bottom: calc(var(--hand-total) * calc(-0.085 * var(--card-height)));
+  transform: rotate(90deg);
 }
 
 .moving {
