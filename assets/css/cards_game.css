@@ -1,0 +1,79 @@
+#game-board {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  border: 1px solid #000;
+}
+
+#deck, #discard-pile {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 140px;
+  background-color: green;
+  transform: translate(-50%, -50%);
+}
+
+.hand {
+  position: absolute;
+  width: 200px;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#player-hand {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#left-player-hand {
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+#right-player-hand {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+#opposite-player-hand {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.card {
+  width: 60px;
+  height: 90px;
+  background-color: white;
+  border: 1px solid #000;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  position: absolute;
+  transition: transform 0.5s ease, top 0.5s ease, left 0.5s ease;
+}
+
+.card .suit {
+  font-size: 18px;
+}
+
+.card.red {
+  color: red;
+}
+
+.card.black {
+  color: black;
+}
+
+.moving {
+  position: absolute;
+}

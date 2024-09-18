@@ -4,4 +4,8 @@ defmodule YemolaiWebsiteWeb.GamesController do
   def snake(conn, _params) do
     render(conn, :snake_game, layout: false, page_title: "Snake Game")
   end
+
+  def games(conn, _params) do
+    render(conn, :cards_game, layout: false, page_title: "Cards Game")
+  end
 end
