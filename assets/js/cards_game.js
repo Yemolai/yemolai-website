@@ -11,6 +11,15 @@ const gameState = {
   discardPile: []
 };
 
+function shuffleDeck() {
+  for (let cardAIdx = gameState.deck.length - 1; cardAIdx > 0; cardAIdx -= 1) {
+    const cardBIdx = Math.floor(Math.random() * (cardAIdx + 1));
+    const cardA = gameState.deck[cardAIdx];
+    const cardB = gameState.deck[cardBIdx];
+    [gameState.deck[cardAIdx], gameState.deck[cardBIdx]] = [cardA, cardB];
+  }
+}
+
 function initializeDeck() {
   gameState.deck = [];
   suits.forEach(suit => {
@@ -21,11 +30,22 @@ function initializeDeck() {
   shuffleDeck();
 }
 
-function shuffleDeck() {
-  for (let i = gameState.deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [gameState.deck[i], gameState.deck[j]] = [gameState.deck[j], gameState.deck[i]];
+function distributePlayerHands() {
+  const players = [gameState.playerHand, gameState.leftPlayerHand, gameState.oppositePlayerHand, gameState.rightPlayerHand];
+  const playerCount = 4;
+  const initialHandSize = 7;
+  for (let handSize = 0; handSize < initialHandSize; handSize += 1) {
+    for (let playerIdx = 0; playerIdx < playerCount; playerIdx += 1) {
+      const card = gameState.deck.pop();
+      players[playerIdx].push(card);
+    }
   }
+}
+
+function initializeGame() {
+  initializeDeck();
+  distributePlayerHands();
+  renderGame();
 }
 
 function updateGameState(newState) {
@@ -34,6 +54,7 @@ function updateGameState(newState) {
 }
 
 function renderGame() {
+  console.log('render game');
   const playerHand = document.getElementById('player-hand');
   const leftPlayerHand = document.getElementById('left-player-hand');
   const rightPlayerHand = document.getElementById('right-player-hand');
@@ -46,27 +67,29 @@ function renderGame() {
   oppositePlayerHand.innerHTML = '';
   discardPile.innerHTML = '';
 
+  console.log({ gameState });
+
   gameState.playerHand.forEach(card => {
     const cardElement = createCardElement(card);
     playerHand.appendChild(cardElement);
   });
 
   gameState.leftPlayerHand.forEach(card => {
-    const cardElement = createCardElement(card);
+    const cardElement = createCardBackElement(card);
     leftPlayerHand.appendChild(cardElement);
   });
 
   gameState.rightPlayerHand.forEach(card => {
-    const cardElement = createCardElement(card);
+    const cardElement = createCardBackElement(card);
     rightPlayerHand.appendChild(cardElement);
   });
 
   gameState.oppositePlayerHand.forEach(card => {
-    const cardElement = createCardElement(card);
+    const cardElement = createCardBackElement(card);
     oppositePlayerHand.appendChild(cardElement);
   });
 
-  gameState.discardPile.forEach(card => {
+  gameState.discardPile.slice().reverse().slice(0, 5).forEach(card => {
     const cardElement = createCardElement(card);
     discardPile.appendChild(cardElement);
   });
@@ -126,5 +149,4 @@ document.getElementById('deck').addEventListener('click', () => {
 });
 
 // Initialize the deck and shuffle it
-initializeDeck();
-updateGameState(gameState);
+initializeGame();
