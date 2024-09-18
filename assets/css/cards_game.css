@@ -89,17 +89,20 @@
 }
 
 .card {
-  width: 60px;
-  height: 90px;
+  width: var(--card-width);
+  min-width: var(--card-width);
+  height: var(--card-height);
+  min-height: var(--card-height);
   background-color: white;
   border: var(--card-border);
   border-radius: var(--card-border-radius);
-  margin: 0 5px;
+  margin: 0 0.5px;
+  padding: 0 0.75px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  position: absolute;
+  flex-direction: column;
+  justify-content: left;
+  align-items: first baseline;
+  font-size: 16px;
   transition: transform 0.5s ease, top 0.5s ease, left 0.5s ease;
 }
 
@@ -109,8 +112,14 @@
   background-size: cover;
 }
 
+.card .rank {
+  margin-top: -4px;
+}
+
 .card .suit {
-  font-size: 18px;
+  margin-top: -8px;
+  margin-left: 2px;
+  font-size: 12px;
 }
 
 .card.red {
@@ -119,6 +128,10 @@
 
 .card.black {
   color: black;
+}
+
+.hand .card {
+  margin-left: calc(var(--card-width) * -0.75);
 }
 
 .moving {
