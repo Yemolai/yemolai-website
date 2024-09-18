@@ -1,4 +1,5 @@
 const suits = ['♠', '♥', '♦', '♣'];
+const redSuits = ['♥', '♦'];
 const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
 const gameState = {
@@ -73,38 +74,54 @@ function renderGame() {
 
 function createCardElement(card) {
   const cardElement = document.createElement('div');
-  cardElement.className = `card ${card.suit === '♥' || card.suit === '♦' ? 'red' : 'black'}`;
+  cardElement.className = `card ${redSuits.includes(card.suit) ? 'red' : 'black'}`;
   cardElement.innerHTML = `<div>${card.rank}</div><div class="suit">${card.suit}</div>`;
   return cardElement;
 }
 
-function moveCard(card, fromElement, toElement) {
-  const cardElement = createCardElement(card);
-  cardElement.classList.add('moving');
-  document.body.appendChild(cardElement);
+function createCardBackElement() {
+  const faceDownCardElement = document.createElement('div');
+  faceDownCardElement.className = 'card face-down-card';
+  return faceDownCardElement;
+}
 
+function moveAndFlipCard(card, fromElement, toElement) {
+  const gameBoard = document.getElementById('game-board');
+  const cardElement = createCardElement(card);
+  const backCardElement = createCardBackElement();
+  cardElement.classList.add('moving');
+  cardElement.classList.add('moving');
+  gameBoard.appendChild(cardElement);
+  gameBoard.appendChild(backCardElement);
+
+  const refRect = gameBoard.getBoundingClientRect();
   const fromRect = fromElement.getBoundingClientRect();
   const toRect = toElement.getBoundingClientRect();
 
-  cardElement.style.top = `${fromRect.top}px`;
-  cardElement.style.left = `${fromRect.left}px`;
+  const cardTop = `${fromRect.top}px`;
+  const cardLeft = `${fromRect.left}px`;
+
+  cardElement.style.top = cardTop;
+  cardElement.style.left = cardLeft;
+  backCardElement.style.top = cardTop;
+  backCardElement.style.left = cardLeft;
 
   requestAnimationFrame(() => {
-    cardElement.style.top = `${toRect.top}px`;
-    cardElement.style.left = `${toRect.left}px`;
+    cardElement.style.animation = 'faceMoveAndFlip 1.2s forwards';
+    backCardElement.style.animation = 'backMoveAndFlip 1.2s forwards';
 
-    cardElement.addEventListener('transitionend', () => {
+    cardElement.addEventListener('animationend', () => {
       cardElement.remove();
+      gameState.playerHand.push(card);
       toElement.appendChild(createCardElement(card));
     }, { once: true });
   });
 }
 
-// Example of moving a card from the deck to the player's hand
+// Example of moving and flipping a card from the deck to the player's hand
 document.getElementById('deck').addEventListener('click', () => {
   const card = gameState.deck.pop();
-  gameState.playerHand.push(card);
-  moveCard(card, document.getElementById('deck'), document.getElementById('player-hand'));
+  moveAndFlipCard(card, document.getElementById('deck'), document.getElementById('player-hand'));
   updateGameState(gameState);
 });
 
