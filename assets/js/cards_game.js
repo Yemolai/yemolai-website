@@ -21,7 +21,7 @@ const Rank = Object.freeze({
   7: "7",
   8: "8",
   9: "9",
-  X: "X",
+  X: "10",
   J: "J",
   Q: "Q",
   K: "K",
@@ -232,14 +232,26 @@ function createCardElement(card) {
   if (suit && rank && !faceDown) {
     cardElement.dataset.suit = suit;
     cardElement.dataset.rank = rank;
+    const rankEl = `<div class="rank">
+      <svg width="9" height="14" preserveAspectRatio="none" viewBox="0 -3 9 12">
+        <text x="50%" y="50%" font-size="9" text-anchor="middle" alignment-baseline="middle" fill="${SuitColor[suit]}">
+          ${rank}
+        </text>
+      </svg>
+    </div>`
+    const suitEl = `<div class="suit">
+      <svg width="8" height="12" preserveAspectRatio="none" viewBox="0 -3 9 12">
+        <text x="50%" y="50%" font-size="9" text-anchor="middle" alignment-baseline="middle" fill="${SuitColor[suit]}">
+          ${suit}
+        </text>
+      </svg>
+    </div>`
     cardElement.innerHTML = `
       <div class="top-left-corner flex flex-col items-center justify-center">
-        <div class="rank">${rank}</div>
-        <div class="suit">${suit}</div>
+        ${rankEl}${suitEl}
       </div>
       <div class="bottom-right-corner flex flex-col items-center justify-center">
-        <div class="rank">${rank}</div>
-        <div class="suit">${suit}</div>
+      ${rankEl}${suitEl}
       </div>
     `;
     cardElement.appendChild(suitGrid(suit, rank));

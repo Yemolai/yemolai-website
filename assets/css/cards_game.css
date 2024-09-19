@@ -164,6 +164,11 @@
 
 .moving {
   position: absolute;
+  z-index: 10;
+}
+
+.moving.face-down-card {
+  z-index: 11;
 }
 
 .flip {
@@ -209,7 +214,7 @@
 
 .card .rank {
   font-size: smaller;
-  margin-bottom: -6px;
+  margin-bottom: -4px;
 }
 
 .card .suit {
