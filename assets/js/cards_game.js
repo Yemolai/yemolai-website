@@ -1,20 +1,49 @@
-const suits = ["♠", "♥", "♦", "♣"];
-const redSuits = ["♥", "♦"];
-const ranks = [
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "J",
-  "Q",
-  "K",
-  "A",
-];
+const Suit = {
+  spades: "♠",
+  hearts: "♥",
+  clubs: "♣",
+  diamonds: "♦",
+};
+const CardColor = Object.freeze({ black: "black", red: "red" });
+const SuitColor = Object.freeze({
+  [Suit.clubs]: CardColor.black,
+  [Suit.spades]: CardColor.black,
+  [Suit.diamonds]: CardColor.red,
+  [Suit.hearts]: CardColor.red,
+});
+const suits = Object.freeze(Object.values(Suit));
+const Rank = Object.freeze({
+  2: "2",
+  3: "3",
+  4: "4",
+  5: "5",
+  6: "6",
+  7: "7",
+  8: "8",
+  9: "9",
+  X: "X",
+  J: "J",
+  Q: "Q",
+  K: "K",
+  A: "A",
+});
+const RankValue = Object.freeze({
+  [Rank[2]]: 2,
+  [Rank[3]]: 3,
+  [Rank[4]]: 4,
+  [Rank[5]]: 5,
+  [Rank[6]]: 6,
+  [Rank[7]]: 7,
+  [Rank[8]]: 8,
+  [Rank[9]]: 9,
+  [Rank.X]: 10,
+  [Rank.J]: 11,
+  [Rank.Q]: 12,
+  [Rank.K]: 13,
+  [Rank.A]: 1,
+});
+
+const ranks = Object.freeze(Object.values(Rank));
 
 const gameState = {
   deck: [],
@@ -60,7 +89,7 @@ function distributePlayerHands() {
     gameState.rightPlayerHand,
   ];
   const playerCount = 4;
-  const initialHandSize = 9;
+  const initialHandSize = 7;
   for (let handSize = 0; handSize < initialHandSize; handSize += 1) {
     for (let playerIdx = 0; playerIdx < playerCount; playerIdx += 1) {
       const card = gameState.deck.pop();
@@ -93,7 +122,6 @@ function discardCard(card) {
 }
 
 function handlePlayerCardClick(event) {
-  console.log({ target: event.target });
   discardCard({
     rank: event.target.dataset.rank,
     suit: event.target.dataset.suit,
@@ -105,6 +133,7 @@ function renderGame() {
   const leftPlayerHand = document.getElementById("left-player-hand");
   const rightPlayerHand = document.getElementById("right-player-hand");
   const oppositePlayerHand = document.getElementById("opposite-player-hand");
+  const deckPile = document.getElementById("deck");
   const discardPile = document.getElementById("discard-pile");
 
   playerHand.innerHTML = "";
@@ -135,27 +164,82 @@ function renderGame() {
     });
   });
 
-  gameState.discardPile
-    .slice()
-    .reverse()
-    .slice(0, 5)
-    .forEach((card) => {
-      const cardElement = createCardElement(card);
-      discardPile.appendChild(cardElement);
-    });
+  if (gameState.deck.length) {
+    gameState.deck
+      .slice(-5, 0)
+      .reverse()
+      .forEach((card) => {
+        const cardElement = createCardBackElement({ ...card, pile: true });
+        deckPile.appendChild(cardElement);
+      });
+  }
+
+  if (gameState.discardPile.length) {
+    gameState.discardPile
+      .slice(-5, 0)
+      .reverse()
+      .forEach((card) => {
+        const cardElement = createCardElement({ ...card, pile: true });
+        discardPile.appendChild(cardElement);
+      });
+  }
+}
+
+const cardGrid = Object.freeze([
+  [[4,5,6,7,8,9,10], [2,3], [4,5,6,7,8,9,10]], // row 1
+  [[], [10], []], // row 2
+  [[9,10], [7, 8], [9,10]], // row 3
+  [[6,7, 8], [1,3,5,9], [6,7, 8]], // row 4
+  [[9,10], [8], [9,10]], // row 5
+  [[], [10], []], // row 6
+  [[4,5,6,7,8,9,10], [2,3], [4,5,6,7,8,9,10]], // row 7
+]);
+
+function suitGrid(suit, rank) {
+  const value = RankValue[rank];
+  const color = SuitColor[suit];
+  const gridContainer = document.createElement("div");
+  gridContainer.className = "art-grid"
+  gridContainer.dataset.suit = suit;
+  gridContainer.dataset.rank = rank;
+  if (value > 10) {
+    const specialCell = document.createElement("div");
+    specialCell.className = `special-rank ${color} ${rank.toLowerCase()}`;
+    return specialCell;
+  }
+  new Array(cardGrid.length)
+    .fill(null)
+    .forEach((_, idx) => new Array(cardGrid[0].length).fill(idx).forEach((line, col) => {
+      const cell = document.createElement("div");
+      cell.className = "suit-cell";
+      if (cardGrid[line][col].includes(value)) {
+        cell.style.setProperty("--cell-line", line);
+        cell.style.setProperty("--cell-col", col);
+        cell.dataset.line = line + 1;
+        cell.dataset.col = col + 1;
+        cell.innerHTML = `<span class="text-${color}">${suit}</span>`;
+        gridContainer.appendChild(cell);
+      }
+    }));
+  console.log('gridContainer', gridContainer);
+  return gridContainer;
 }
 
 function createCardElement(card) {
-  const { suit, rank, handIdx, handTotal, faceDown } = card;
+  const { suit, rank, handIdx, handTotal, faceDown, pile } = card;
   const cardElement = document.createElement("div");
-  if (suit)
-    cardElement.className = `card ${redSuits.includes(suit) ? "red" : "black"}`;
-  if (suit && rank) {
+  if (suit) cardElement.className = `card ${SuitColor[suit]}`;
+  if (suit && rank && !faceDown) {
     cardElement.dataset.suit = suit;
     cardElement.dataset.rank = rank;
-    cardElement.innerHTML = `<div class="rank">${rank}</div><div class="suit">${suit}</div>`;
+    cardElement.innerHTML = [
+      `<div class="rank">${rank}</div>`,
+      `<div class="suit">${suit}</div>`,
+    ].join("\n");
+    cardElement.appendChild(suitGrid(suit, rank));
   }
   if (faceDown == true) cardElement.className = "card face-down-card";
+  if (pile === true) cardElement.className += " piled";
   if (handIdx !== undefined && handTotal) {
     cardElement.style.setProperty("--hand-idx", `${handIdx}`);
     cardElement.style.setProperty("--hand-total", `${handTotal}`);

@@ -54,7 +54,7 @@
 }
 
 #player-hand {
-  background-color: #999999BB;
+  background-color: #999999bb;
   bottom: 0.5rem;
   left: calc(50% - var(--hand-area-width) / 2);
   width: var(--hand-area-width);
@@ -62,7 +62,7 @@
 }
 
 #left-player-hand {
-  background-color: #BB3300AB;
+  background-color: #bb3300ab;
   top: calc(var(--pile-height) + 0.5rem);
   right: unset;
   bottom: unset;
@@ -110,7 +110,8 @@
 
 .face-down-card {
   background-color: unset;
-  background: url('/images/games/cards/assets/card_back_orange.png') no-repeat center center;
+  background: url("/images/games/cards/assets/card_back_orange.png") no-repeat
+    center center;
   background-size: cover;
 }
 
@@ -133,12 +134,41 @@
 }
 
 .hand .card {
-  margin-left: calc(var(--hand-total) * calc(-0.08 * var(--card-width)));
+  position: relative;
+  z-index: calc(var(--hand-idx) + 1);
+  margin-left: max(
+    calc(var(--card-width) * -0.4),
+    min(
+      calc(-8px + calc(var(--hand-total) * calc(var(--card-width) * -0.02))),
+      0px
+    )
+  );
+  margin-right: max(
+    calc(var(--card-width) * -0.4),
+    min(
+      calc(-8px + calc(var(--hand-total) * calc(var(--card-width) * -0.02))),
+      0px
+    )
+  );
 }
 
-.side.hand .card{
+.side.hand .card {
   margin-left: unset;
-  margin-bottom: calc(var(--hand-total) * calc(-0.085 * var(--card-height)));
+  margin-top: max(
+    calc(var(--card-height) * -0.4),
+    min(
+      calc(-8px + calc(var(--hand-total) * calc(var(--card-height) * -0.04))),
+      0px
+    )
+  );
+  margin-right: unset;
+  margin-bottom: max(
+    calc(var(--card-height) * -0.4),
+    min(
+      calc(-8px + calc(var(--hand-total) * calc(var(--card-height) * -0.04))),
+      0px
+    )
+  );
   transform: rotate(90deg);
 }
 
@@ -172,4 +202,23 @@
   100% {
     transform: translate(10%, 50%) rotateX(90deg) rotateZ(180deg);
   }
+}
+
+.card .art-grid {
+  position: absolute;
+  width: calc(100% - 18px);
+  height: 100%;
+  top: 0;
+  left: 9px;
+}
+
+.card .suit-cell {
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 12px;
+}
+
+.card .suit-cell {
+  top: calc(var(--cell-line) * calc(calc(100% - 12px) / 7) + 12px);
+  left: calc(var(--cell-col) * calc(calc(100% - 10px) / 3) + 10px);
 }
