@@ -185,6 +185,7 @@ function renderGame() {
   }
 }
 
+// prettier-ignore
 const cardGrid = Object.freeze([
   [[4,5,6,7,8,9,10], [2,3], [4,5,6,7,8,9,10]], // row 1
   [[], [10], []], // row 2
@@ -199,7 +200,7 @@ function suitGrid(suit, rank) {
   const value = RankValue[rank];
   const color = SuitColor[suit];
   const gridContainer = document.createElement("div");
-  gridContainer.className = "art-grid"
+  gridContainer.className = `art-grid text-${color}`;
   gridContainer.dataset.suit = suit;
   gridContainer.dataset.rank = rank;
   if (value > 10) {
@@ -207,9 +208,8 @@ function suitGrid(suit, rank) {
     specialCell.className = `special-rank ${color} ${rank.toLowerCase()}`;
     return specialCell;
   }
-  new Array(cardGrid.length)
-    .fill(null)
-    .forEach((_, idx) => new Array(cardGrid[0].length).fill(idx).forEach((line, col) => {
+  new Array(cardGrid.length).fill(null).forEach((_, idx) =>
+    new Array(cardGrid[0].length).fill(idx).forEach((line, col) => {
       const cell = document.createElement("div");
       cell.className = "suit-cell";
       if (cardGrid[line][col].includes(value)) {
@@ -217,11 +217,11 @@ function suitGrid(suit, rank) {
         cell.style.setProperty("--cell-col", col);
         cell.dataset.line = line + 1;
         cell.dataset.col = col + 1;
-        cell.innerHTML = `<span class="text-${color}">${suit}</span>`;
+        cell.innerHTML = `${suit}`;
         gridContainer.appendChild(cell);
       }
-    }));
-  console.log('gridContainer', gridContainer);
+    })
+  );
   return gridContainer;
 }
 
@@ -232,10 +232,16 @@ function createCardElement(card) {
   if (suit && rank && !faceDown) {
     cardElement.dataset.suit = suit;
     cardElement.dataset.rank = rank;
-    cardElement.innerHTML = [
-      `<div class="rank">${rank}</div>`,
-      `<div class="suit">${suit}</div>`,
-    ].join("\n");
+    cardElement.innerHTML = `
+      <div class="top-left-corner flex flex-col items-center justify-center">
+        <div class="rank">${rank}</div>
+        <div class="suit">${suit}</div>
+      </div>
+      <div class="bottom-right-corner flex flex-col items-center justify-center">
+        <div class="rank">${rank}</div>
+        <div class="suit">${suit}</div>
+      </div>
+    `;
     cardElement.appendChild(suitGrid(suit, rank));
   }
   if (faceDown == true) cardElement.className = "card face-down-card";

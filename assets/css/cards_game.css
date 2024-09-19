@@ -115,16 +115,6 @@
   background-size: cover;
 }
 
-.card .rank {
-  margin-top: -4px;
-}
-
-.card .suit {
-  margin-top: -8px;
-  margin-left: 2px;
-  font-size: 12px;
-}
-
 .card.red {
   color: red;
 }
@@ -204,21 +194,51 @@
   }
 }
 
+.card .top-left-corner {
+  position: absolute;
+  top: 0;
+  left: 2px;
+}
+
+.card .bottom-right-corner {
+  position: absolute;
+  right: 2px;
+  bottom: 0px;
+  transform: rotateX(180deg) rotateY(180deg);
+}
+
+.card .rank {
+  font-size: smaller;
+  margin-bottom: -6px;
+}
+
+.card .suit {
+  font-size: 10px;
+}
+
 .card .art-grid {
   position: absolute;
-  width: calc(100% - 18px);
+  width: calc(100% - 12px);
   height: 100%;
   top: 0;
-  left: 9px;
+  left: 6px;
 }
 
 .card .suit-cell {
   position: absolute;
-  transform: translateX(-50%) translateY(-50%);
   font-size: 12px;
 }
 
 .card .suit-cell {
-  top: calc(var(--cell-line) * calc(calc(100% - 12px) / 7) + 12px);
-  left: calc(var(--cell-col) * calc(calc(100% - 10px) / 3) + 10px);
+  top: calc(var(--cell-line) * calc(calc(100% - 28px) / 7) + 8px);
+  left: calc(var(--cell-col) * calc(calc(100% - 10px) / 3) + 6px);
+}
+
+.card .suit-cell[data-line="5"], .card .suit-cell[data-line="6"], .card .suit-cell[data-line="7"] {
+  transform: rotateZ(180deg);
+  transform-origin: center;
+}
+
+.card[data-rank="A"] .suit-cell {
+  font-size: 24px;
 }
