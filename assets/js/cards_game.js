@@ -271,21 +271,20 @@ function createCardBackElement(card) {
   return createCardElement({ ...card, faceDown: true });
 }
 
-function moveAndFlipCard(card, fromElement, toElement) {
+function moveAndFlipCard(card, toElement) {
   const gameBoard = document.getElementById("game-board");
   const cardElement = createCardElement(card);
-  const backCardElement = createCardBackElement();
+  const backCardElement = document.querySelector("#deck :last-child");
   cardElement.classList.add("moving");
   backCardElement.classList.add("moving");
   gameBoard.appendChild(cardElement);
   gameBoard.appendChild(backCardElement);
 
-  const refRect = gameBoard.getBoundingClientRect();
-  const fromRect = fromElement.getBoundingClientRect();
+  const fromRect = backCardElement.getBoundingClientRect();
   const toRect = toElement.getBoundingClientRect();
 
-  const cardTop = `${fromRect.top}px`;
-  const cardLeft = `${fromRect.left}px`;
+  const cardTop = `${fromRect.top + fromRect.height}px`;
+  const cardLeft = `${fromRect.left + fromRect.width}px`;
 
   cardElement.style.top = cardTop;
   cardElement.style.left = cardLeft;
@@ -293,8 +292,10 @@ function moveAndFlipCard(card, fromElement, toElement) {
   backCardElement.style.left = cardLeft;
 
   requestAnimationFrame(() => {
-    cardElement.style.animation = "faceMoveAndFlip 1.2s forwards";
+    backCardElement.style.transformOrigin = "center center";
     backCardElement.style.animation = "backMoveAndFlip 1.2s forwards";
+    cardElement.style.transformOrigin = "center center";
+    cardElement.style.animation = "faceMoveAndFlip 1.2s forwards";
 
     cardElement.addEventListener(
       "animationend",
@@ -313,7 +314,7 @@ document.getElementById("deck").addEventListener("click", () => {
   const card = gameState.deck.pop();
   moveAndFlipCard(
     card,
-    document.getElementById("deck"),
+    document.querySelector("#deck :last-child"),
     document.getElementById("player-hand")
   );
   updateGameState(gameState);

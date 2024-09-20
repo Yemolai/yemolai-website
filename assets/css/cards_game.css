@@ -198,27 +198,33 @@
   transform: rotateY(180deg);
 }
 
-@keyframes faceMoveAndFlip {
+@keyframes backMoveAndFlip {
   0% {
-    transform: translate(10%, 50%) rotateX(90deg) rotateZ(180deg);
+    transform: translateX(var(--card-width)) translateY(var(--card-height))
+      rotateX(180deg) rotateZ(180deg);
   }
-  50% {
-    transform: translate(10%, 50%) rotateX(90deg) rotateZ(180deg);
+  63% {
+    transform: translateX(var(--card-width)) translateY(160px) rotateX(90deg)
+      rotateZ(180deg);
   }
   100% {
-    transform: translate(0%, 200px) rotateX(0) rotateZ(0deg);
+    transform: translateX(var(--card-width)) translateY(160px) rotateX(90deg)
+      rotateZ(180deg);
   }
 }
 
-@keyframes backMoveAndFlip {
+@keyframes faceMoveAndFlip {
   0% {
-    transform: translate(0, 0) rotateX(180deg) rotateZ(180deg);
+    transform: translateX(var(--card-width)) translateY(160px) rotateX(90deg)
+      rotateZ(180deg);
   }
-  60% {
-    transform: translate(10%, 50%) rotateX(90deg) rotateZ(180deg);
+  51% {
+    transform: translateX(var(--card-width)) translateY(160px) rotateX(90deg)
+      rotateZ(180deg);
   }
   100% {
-    transform: translate(10%, 50%) rotateX(90deg) rotateZ(180deg);
+    transform: translateX(calc(var(--card-width) * 1.5)) translateY(240px)
+      rotateX(0) rotateZ(0deg);
   }
 }
 
