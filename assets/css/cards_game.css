@@ -9,6 +9,8 @@
   width: 50vw;
   height: calc(calc(80vw * 4) / 9);
   border: 1px solid #000;
+  border-radius: 4px;
+  background-color: rgb(65, 167, 101);
 
   --card-width: 60px;
   --card-height: 90px;
@@ -60,10 +62,10 @@
   align-items: center;
   border: 1.5px solid #00000025;
   border-radius: 6px;
+  background-color: #8383;
 }
 
 #player-hand {
-  background-color: #999999bb;
   bottom: 0.5rem;
   left: calc(50% - var(--hand-area-width) / 2);
   width: var(--hand-area-width);
@@ -71,7 +73,6 @@
 }
 
 #left-player-hand {
-  background-color: #bb3300ab;
   top: calc(var(--pile-height) + 0.5rem);
   right: unset;
   bottom: unset;
@@ -82,7 +83,6 @@
 }
 
 #right-player-hand {
-  background-color: #8383;
   top: calc(var(--pile-height) + 0.5rem);
   bottom: unset;
   left: calc(100% - var(--pile-height) - var(--hand-area-edge-padding));
@@ -92,7 +92,6 @@
 }
 
 #opposite-player-hand {
-  background-color: #0088bbab;
   top: var(--hand-area-edge-padding);
   left: calc(50% - calc(var(--card-width) * 2.5));
   width: var(--hand-area-width);
@@ -173,7 +172,7 @@
 
 #player-hand .card {
   box-shadow: calc(1px * calc(var(--hand-idx) - calc(var(--hand-total) / 2)))
-    24px 8px 0.1px #80808093;
+    24px 8px 0.1px rgb(67, 116, 66);
   transform-origin: bottom center;
   transform: perspective(23rem) rotateX(-45deg) scaleY(1.2) translateY(-1rem)
     rotateZ(calc(4deg * calc(var(--hand-idx) - calc(var(--hand-total) / 2))));
