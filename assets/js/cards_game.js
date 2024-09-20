@@ -172,7 +172,6 @@ function renderGame() {
 
   if (gameState.deck.length) {
     gameState.deck
-      .reverse()
       .forEach((card) => {
         const cardElement = createCardBackElement({ ...card, pile: true });
         deckPile.appendChild(cardElement);
@@ -181,7 +180,6 @@ function renderGame() {
 
   if (gameState.discardPile.length) {
     gameState.discardPile
-      .reverse()
       .forEach((card) => {
         const cardElement = createCardElement({ ...card, pile: true });
         discardPile.appendChild(cardElement);

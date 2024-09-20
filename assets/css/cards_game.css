@@ -1,6 +1,7 @@
 #game-board {
   position: relative;
-  transform: perspective(23rem) rotateX(calc(38deg + var(--board-x-angle, 0deg)))
+  transform: perspective(50rem)
+    rotateX(calc(38deg + var(--board-x-angle, 0deg)))
     rotateY(var(--board-y-angle, 0deg)) translateY(-18%);
   transition: transform;
   min-width: 700px;
@@ -171,13 +172,16 @@
 }
 
 #player-hand .card {
-  transform-origin: center bottom;
-  transform: perspective(23rem) rotateX(-45deg) scaleY(1.2)
+  box-shadow: calc(1px * calc(var(--hand-idx) - calc(var(--hand-total) / 2)))
+    24px 8px 0.1px #80808093;
+  transform-origin: bottom center;
+  transform: perspective(23rem) rotateX(-45deg) scaleY(1.2) translateY(-1rem)
     rotateZ(calc(4deg * calc(var(--hand-idx) - calc(var(--hand-total) / 2))));
 }
 
 #player-hand .card:hover {
-  transform: perspective(23rem) rotateX(-45deg) scaleX(1.24) scaleY(1.5)
+  transform: perspective(18rem) rotateX(-45deg) scaleX(1.24) scaleY(1.34)
+    translateY(-1.05rem)
     rotateZ(calc(4deg * calc(var(--hand-idx) - calc(var(--hand-total) / 2))));
 }
 
@@ -198,7 +202,7 @@
   0% {
     transform: translate(10%, 50%) rotateX(90deg) rotateZ(180deg);
   }
-  60% {
+  50% {
     transform: translate(10%, 50%) rotateX(90deg) rotateZ(180deg);
   }
   100% {
