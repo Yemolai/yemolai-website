@@ -98,9 +98,14 @@ function distributePlayerHands() {
   }
 }
 
+function discardFromDeckPile() {
+  gameState.discardPile.push(gameState.deck.pop());
+}
+
 function initializeGame() {
   initializeDeck();
   distributePlayerHands();
+  discardFromDeckPile();
   renderGame();
 }
 
@@ -140,6 +145,7 @@ function renderGame() {
   leftPlayerHand.innerHTML = "";
   rightPlayerHand.innerHTML = "";
   oppositePlayerHand.innerHTML = "";
+  deckPile.innerHTML = "";
   discardPile.innerHTML = "";
 
   gameState.playerHand.forEach((card, handIdx, hand) => {
@@ -154,7 +160,7 @@ function renderGame() {
     [gameState.oppositePlayerHand, oppositePlayerHand],
     [gameState.rightPlayerHand, rightPlayerHand],
   ].forEach(([handState, handArea]) => {
-    handState.forEach((card, handIdx) => {
+    handState.forEach((_card, handIdx) => {
       const handTotal = handState.length;
       const cardElement = createCardBackElement({
         handIdx,
@@ -166,7 +172,6 @@ function renderGame() {
 
   if (gameState.deck.length) {
     gameState.deck
-      .slice(-5, 0)
       .reverse()
       .forEach((card) => {
         const cardElement = createCardBackElement({ ...card, pile: true });
@@ -176,7 +181,6 @@ function renderGame() {
 
   if (gameState.discardPile.length) {
     gameState.discardPile
-      .slice(-5, 0)
       .reverse()
       .forEach((card) => {
         const cardElement = createCardElement({ ...card, pile: true });
