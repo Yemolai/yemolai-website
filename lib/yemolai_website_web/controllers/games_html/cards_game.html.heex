@@ -1,0 +1,18 @@
+<link rel="stylesheet" type="text/css" href={~p"/assets/cards_game.css"} />
+
+<div id="game-board">
+  <div id="deck" class="pile"></div>
+  <div id="player-hand" class="hand"></div>
+  <div id="left-player-hand" class="hand side"></div>
+  <div id="right-player-hand" class="hand side"></div>
+  <div id="opposite-player-hand" class="hand"></div>
+  <div id="discard-pile" class="pile"></div>
+</div>
+
+<script src={~p"/assets/cards_game.js"}></script>
+<script type="text/javascript">
+  window.cards = {
+    backImage:`<%= ~p"/images/games/cards/assets/card_back_orange.png" %>`
+  }
+  // window.cardsGameControls.init();
+</script>

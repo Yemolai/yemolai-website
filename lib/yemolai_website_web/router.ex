@@ -24,6 +24,7 @@ defmodule YemolaiWebsiteWeb.Router do
     get "/", PageController, :home
     get "/projects", PageController, :projects
     get "/games/snake", GamesController, :snake
+    get "/games/cards", GamesController, :games
   end
 
   # Other scopes may use custom stacks.
