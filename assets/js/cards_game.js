@@ -321,5 +321,17 @@ document.getElementById("deck").addEventListener("click", () => {
   updateGameState(gameState);
 });
 
+const gameBoard = document.getElementById("game-board");
+
+document.addEventListener("mousemove", (event) => {
+  const { clientX, clientY } = event;
+  const { innerWidth, innerHeight } = window;
+  const xFactor = (-0.5 + (clientX / innerWidth)) / 2;
+  const yFactor = (-0.5 + (clientY / innerHeight)) / 2;
+
+  gameBoard.style.setProperty("--board-x-angle", `${(yFactor * -1).toFixed(4)}deg`);
+  gameBoard.style.setProperty("--board-y-angle", `${(xFactor * -1).toFixed(4)}deg`);
+})
+
 // Initialize the deck and shuffle it
 initializeGame();

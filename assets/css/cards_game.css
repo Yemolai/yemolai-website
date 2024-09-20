@@ -1,7 +1,12 @@
 #game-board {
   position: relative;
-  width: 800px;
-  height: 600px;
+  transform: perspective(23rem) rotateX(calc(38deg + var(--board-x-angle, 0deg)))
+    rotateY(var(--board-y-angle, 0deg)) translateY(-18%);
+  transition: transform;
+  min-width: 700px;
+  min-height: 500px;
+  width: 50vw;
+  height: calc(calc(80vw * 4) / 9);
   border: 1px solid #000;
 
   --card-width: 60px;
@@ -29,7 +34,9 @@
 .pile > .card {
   position: relative;
   left: calc(50% - calc(1px + 0.5 * var(--card-width)));
-  top: calc(50% - calc(var(--card-border-width) + calc(0.5 * var(--card-height))));
+  top: calc(
+    50% - calc(var(--card-border-width) + calc(0.5 * var(--card-height)))
+  );
   margin-bottom: calc(-1 * var(--card-height) - 0.5px);
 }
 
@@ -163,6 +170,17 @@
   transform: rotate(90deg);
 }
 
+#player-hand .card {
+  transform-origin: center bottom;
+  transform: perspective(23rem) rotateX(-45deg) scaleY(1.2)
+    rotateZ(calc(4deg * calc(var(--hand-idx) - calc(var(--hand-total) / 2))));
+}
+
+#player-hand .card:hover {
+  transform: perspective(23rem) rotateX(-45deg) scaleX(1.24) scaleY(1.5)
+    rotateZ(calc(4deg * calc(var(--hand-idx) - calc(var(--hand-total) / 2))));
+}
+
 .moving {
   position: absolute;
   z-index: 10;
@@ -240,7 +258,9 @@
   left: calc(var(--cell-col) * calc(calc(100% - 10px) / 3) + 6px);
 }
 
-.card .suit-cell[data-line="5"], .card .suit-cell[data-line="6"], .card .suit-cell[data-line="7"] {
+.card .suit-cell[data-line="5"],
+.card .suit-cell[data-line="6"],
+.card .suit-cell[data-line="7"] {
   transform: rotateZ(180deg);
   transform-origin: center;
 }
